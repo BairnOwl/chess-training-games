@@ -78,21 +78,22 @@ class Square{
 }
 
 
-// ------
-function assert(x: boolean) {
-    if (x === false) {
-        throw "AssertionError"
-    }
-}
+module.exports = Square;
+// // ------
+// function assert(x: boolean) {
+//     if (x === false) {
+//         throw "AssertionError"
+//     }
+// }
 
-let sq = new Square(1, 1);
+// let sq = new Square(1, 1);
 
-// add tests/checks
-assert(sq.index() === 9);
-assert(sq.notation() === "b2");
-assert(sq.color() === Color.Black);
+// // add tests/checks
+// assert(sq.index() === 9);
+// assert(sq.notation() === "b2");
+// assert(sq.color() === Color.Black);
 
-assert(Square.fromNotation("b2").index() === 9);
-assert(Square.fromIndex(9).notation() === "b2");
+// assert(Square.fromNotation("b2").index() === 9);
+// assert(Square.fromIndex(9).notation() === "b2");
 
-// todo translate & add unittests for square 
+// // todo translate & add unittests for square 
