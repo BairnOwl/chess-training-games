@@ -40,8 +40,10 @@ const PIECE_ABBREVIATIONS: string[] = ["B", "R", "Q", "K", "N"];
 
 
 export abstract class Piece {
-    static directions: DirectionVec[];
-    static abbreviation: string;
+    /* TODO in theory these should be static but if I need to access them in a 
+    subclass I need to access them by class name instead of this. */
+    directions: DirectionVec[];
+    abbreviation: string;
 
     square: Square;
     // pointer to board object used to get info about occupied squares
@@ -56,42 +58,96 @@ export abstract class Piece {
 }
 
 abstract class SlidingPiece extends Piece {
+    /**
+     * Get an array of squares to which the sliding piece instance can move to.
+     */
     getMoves(): Square[] {
-        let moves: Square[]
+        const moves: Square[] = [];
+
+        let new_square: Square;
+        for (const direction of this.directions) {
+            new_square = this.square;
+
+            while (true) {
+                const new_file = new_square.file + direction.file;
+                const new_rank = new_square.rank + direction.rank;
+
+                try {
+                    new_square = new Square(new_file, new_rank);
+                }
+                catch (e) {
+                    // we are out of bounds -> this square doesn't exist
+                    // move to next direction
+                    break;
+                }
+
+                // if square exists but its occupied -> move to next direction
+                if (this.board.occupied.includes(new_square)) {
+                    break;
+                }
+
+                moves.push(new_square);
+            }
+        } 
 
         return moves
     }
 }
 
 abstract class NonSlidingPiece extends Piece {
+    /**
+     * Get an array of squares to which the non-sliding piece instance can move to.
+     */
     getMoves(): Square[] {
-        let moves: Square[]
+        const moves: Square[] = [];
+
+        for (const direction of this.directions) {
+            const new_file = this.square.file + direction.file;
+            const new_rank = this.square.rank + direction.rank;
+            
+            let new_square: Square;
+            try {
+                new_square = new Square(new_file, new_rank);
+            }
+            catch(e) {
+                // we are out of bounds -> this square doesn't exist
+                // move to next direction
+                continue;
+            }
+
+            // if square exists but its occupied -> move to next direction
+            if (this.board.occupied.includes(new_square)) {
+                continue;
+            }
+
+            moves.push(new_square);
+        }
 
         return moves
     }
 }
 
 export class Bishop extends SlidingPiece {
-    static directions = DIAGONAL;
-    static abbreviation = "B";
+    directions = DIAGONAL;
+    abbreviation = "B";
 }
 
 export class Rook extends SlidingPiece {
-    static directions = ORTHOGONAL;
-    static abbreviation = "R";
+    directions = ORTHOGONAL;
+    abbreviation = "R";
 }
 
 export class Queen extends SlidingPiece {
-    static directions = COMBINED;
-    static abbreviation = "Q";
+    directions = COMBINED;
+    abbreviation = "Q";
 }
 
 export class King extends NonSlidingPiece {
-    static directions = COMBINED;
-    static abbreviation = "K";
+    directions = COMBINED;
+    abbreviation = "K";
 } 
 
 export class Knight extends NonSlidingPiece {
-    static directions = KNIGHT;
-    static abbreviation = "N";
+    directions = KNIGHT;
+    abbreviation = "N";
 } 

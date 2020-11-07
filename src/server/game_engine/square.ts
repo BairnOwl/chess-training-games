@@ -18,7 +18,7 @@ export class Square{
 
     constructor(file: number, rank: number) {
         if (!(0 <= file && file < 8) || !(0 <= rank && rank < 8)) {
-            throw `Ivalid rank/file: f-${file} r-${rank}`;
+            throw new Error(`Ivalid rank/file: f-${file} r-${rank}`);
         }
 
         this.file = file;
@@ -28,7 +28,7 @@ export class Square{
     /** Alternative constructor for creating Square objects from 64-based index*/
     static fromIndex(index: number): Square {
         if (!(0 <= index && index < 64)) {
-            throw `Wrong index: ${index}. Index should be in range [0, 63]`;
+            throw new Error(`Wrong index: ${index}. Index should be in range [0, 63]`);
         }
         let rank = Math.floor(index / 8);
         let file = index % 8;
@@ -38,7 +38,7 @@ export class Square{
     /** Alternative constructor for creating Square objects from square notation (i.e. "a1", "d3"*/
     static fromNotation(notation: string): Square {
         if (notation.length !== 2) {
-            throw `Wrong square format ${notation}`;
+            throw new Error(`Wrong square format ${notation}`);
         }   
 
         notation = notation.toLowerCase();
@@ -47,7 +47,7 @@ export class Square{
         let rankStr = notation[1];
 
         if (!(FILES.includes(fileStr)) || !(RANKS.includes(parseInt(rankStr)))) {
-            throw `Wrong square format ${notation}`;
+            throw new Error(`Wrong square format ${notation}`);
         }
 
         let file = FILES.indexOf(fileStr);
