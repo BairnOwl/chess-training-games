@@ -85,7 +85,7 @@ abstract class SlidingPiece extends Piece {
                 }
 
                 // if square exists but its occupied -> move to next direction
-                if (this.board.occupied.includes(new_square)) {
+                if (this.board.occupied().includes(new_square)) {
                     break;
                 }
 
@@ -119,7 +119,7 @@ abstract class NonSlidingPiece extends Piece {
             }
 
             // if square exists but its occupied -> move to next direction
-            if (this.board.occupied.includes(new_square)) {
+            if (this.board.occupied().includes(new_square)) {
                 continue;
             }
 
