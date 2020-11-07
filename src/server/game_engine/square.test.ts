@@ -56,7 +56,7 @@ test("Square fromNotation constructor", () => {
 test("Square fromIndex constructor", () => {
     let square = Square.fromIndex(63);
     expect(square).toEqual(Square.fromNotation("h8"));
-    
+
     square = Square.fromIndex(5);
     expect(square).toEqual(Square.fromNotation("f1"));
 

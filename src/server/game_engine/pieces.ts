@@ -7,17 +7,17 @@ interface DirectionVec {
 }
 
 const ORTHOGONAL: DirectionVec[] = [
-    { file:  0, rank: -1 }, // North
-    { file:  0, rank:  1 }, // South
-    { file: -1, rank:  0 }, // West
-    { file:  0, rank: -1 }, // East
+    { file: 0, rank: -1 }, // North
+    { file: 0, rank: 1 }, // South
+    { file: -1, rank: 0 }, // West
+    { file: 0, rank: -1 }, // East
 ];
 
 const DIAGONAL: DirectionVec[] = [
     { file: -1, rank: -1 }, // Topleft
-    { file: -1, rank:  1 }, // Topright
-    { file:  1, rank: -1 }, // Bottomleft
-    { file:  1, rank:  1 }, // Bottomright
+    { file: -1, rank: 1 }, // Topright
+    { file: 1, rank: -1 }, // Bottomleft
+    { file: 1, rank: 1 }, // Bottomright
 ];
 
 const COMBINED: DirectionVec[] = [
@@ -26,19 +26,22 @@ const COMBINED: DirectionVec[] = [
 ];
 
 const KNIGHT: DirectionVec[] = [
-    { file: -1, rank: -2}, // TL
-    { file: -2, rank: -1}, // TL2
-    { file: -2, rank:  1}, // BL
-    { file: -1, rank:  2}, // BL2
-    { file:  1, rank: -2}, // TR
-    { file:  2, rank: -1}, // TR2
-    { file:  2, rank:  1}, // BR
-    { file:  1, rank:  2}, // BR2
+    { file: -1, rank: -2 }, // TL
+    { file: -2, rank: -1 }, // TL2
+    { file: -2, rank: 1 }, // BL
+    { file: -1, rank: 2 }, // BL2
+    { file: 1, rank: -2 }, // TR
+    { file: 2, rank: -1 }, // TR2
+    { file: 2, rank: 1 }, // BR
+    { file: 1, rank: 2 }, // BR2
 ];
 
 const PIECE_ABBREVIATIONS: string[] = ["B", "R", "Q", "K", "N"];
 
 
+/**
+ * Abstract base class for all piece types.
+ */
 export abstract class Piece {
     /* TODO in theory these should be static but if I need to access them in a 
     subclass I need to access them by class name instead of this. */
@@ -48,7 +51,7 @@ export abstract class Piece {
     square: Square;
     // pointer to board object used to get info about occupied squares
     readonly board: any;
-        
+
     constructor(square: Square, board: any) {
         this.square = square;
         this.board = board;
@@ -88,9 +91,9 @@ abstract class SlidingPiece extends Piece {
 
                 moves.push(new_square);
             }
-        } 
+        }
 
-        return moves
+        return moves;
     }
 }
 
@@ -104,12 +107,12 @@ abstract class NonSlidingPiece extends Piece {
         for (const direction of this.directions) {
             const new_file = this.square.file + direction.file;
             const new_rank = this.square.rank + direction.rank;
-            
+
             let new_square: Square;
             try {
                 new_square = new Square(new_file, new_rank);
             }
-            catch(e) {
+            catch (e) {
                 // we are out of bounds -> this square doesn't exist
                 // move to next direction
                 continue;
@@ -123,7 +126,7 @@ abstract class NonSlidingPiece extends Piece {
             moves.push(new_square);
         }
 
-        return moves
+        return moves;
     }
 }
 
@@ -145,7 +148,7 @@ export class Queen extends SlidingPiece {
 export class King extends NonSlidingPiece {
     directions = COMBINED;
     abbreviation = "K";
-} 
+}
 
 export class Knight extends NonSlidingPiece {
     directions = KNIGHT;

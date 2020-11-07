@@ -12,7 +12,7 @@ const RANKS: number[] = Array.from(new Array(8), (x, i) => i + 1);
 const COLOR_BITBOARD: number = 0xAA55AA55;
 
 
-export class Square{
+export class Square {
     file: number;
     rank: number;
 
@@ -39,10 +39,10 @@ export class Square{
     static fromNotation(notation: string): Square {
         if (notation.length !== 2) {
             throw new Error(`Wrong square format ${notation}`);
-        }   
+        }
 
         notation = notation.toLowerCase();
-        
+
         let fileStr = notation[0];
         let rankStr = notation[1];
 
@@ -52,7 +52,7 @@ export class Square{
 
         let file = FILES.indexOf(fileStr);
         let rank = RANKS.indexOf(parseInt(rankStr));
-        
+
         return new this(file, rank);
     }
 
