@@ -1,5 +1,5 @@
 /** Square color enum */
-enum Color {
+export enum Color {
     White,
     Black
 }
@@ -12,7 +12,7 @@ const RANKS: number[] = Array.from(new Array(8), (x, i) => i + 1);
 const COLOR_BITBOARD: number = 0xAA55AA55;
 
 
-class Square{
+export class Square{
     file: number;
     rank: number;
 
@@ -27,16 +27,19 @@ class Square{
 
     /** Alternative constructor for creating Square objects from 64-based index*/
     static fromIndex(index: number): Square {
+        if (!(0 <= index && index < 64)) {
+            throw `Wrong index: ${index}. Index should be in range [0, 63]`;
+        }
         let rank = Math.floor(index / 8);
         let file = index % 8;
-        return new this(file, rank)
+        return new this(file, rank);
     }
 
     /** Alternative constructor for creating Square objects from square notation (i.e. "a1", "d3"*/
     static fromNotation(notation: string): Square {
-         if (notation.length !== 2) {
-             throw `Wrong square format ${notation}`;
-         }   
+        if (notation.length !== 2) {
+            throw `Wrong square format ${notation}`;
+        }   
 
         notation = notation.toLowerCase();
         
@@ -44,13 +47,13 @@ class Square{
         let rankStr = notation[1];
 
         if (!(FILES.includes(fileStr)) || !(RANKS.includes(parseInt(rankStr)))) {
-            throw `Wrong square format ${notation}`;;
+            throw `Wrong square format ${notation}`;
         }
 
-        let file = FILES.indexOf(fileStr)
-        let rank = RANKS.indexOf(parseInt(rankStr)) 
+        let file = FILES.indexOf(fileStr);
+        let rank = RANKS.indexOf(parseInt(rankStr));
         
-        return new this(file, rank)
+        return new this(file, rank);
     }
 
     /** Return a 64-based index of the square */
@@ -60,7 +63,7 @@ class Square{
 
     /** Return a notation string of the square position (ex. a1, d3 etc.) */
     notation(): string {
-        return `${FILES[this.file]}${RANKS[this.rank]}`
+        return `${FILES[this.file]}${RANKS[this.rank]}`;
     }
 
     /** Return an enum value of the color of the square: Black or White */
@@ -68,7 +71,7 @@ class Square{
         // Convert index to 32-bit representation since the board pattern is the same
         let index = this.index();
         if (index >= 32) {
-            index = index - 32
+            index = index - 32;
         }
 
         let isBlack: number = (COLOR_BITBOARD >> index) & 1;
@@ -76,24 +79,3 @@ class Square{
         return (isBlack ? Color.Black : Color.White);
     }
 }
-
-
-module.exports = Square;
-// // ------
-// function assert(x: boolean) {
-//     if (x === false) {
-//         throw "AssertionError"
-//     }
-// }
-
-// let sq = new Square(1, 1);
-
-// // add tests/checks
-// assert(sq.index() === 9);
-// assert(sq.notation() === "b2");
-// assert(sq.color() === Color.Black);
-
-// assert(Square.fromNotation("b2").index() === 9);
-// assert(Square.fromIndex(9).notation() === "b2");
-
-// // todo translate & add unittests for square 
