@@ -74,12 +74,14 @@ export class Square {
             index = index - 32;
         }
 
-        let isBlack: number = (COLOR_BITBOARD >> index) & 1;
+        // Compute if square is black or white based on index 
+        // and its intersection to the color bitmask
+        const isBlack: number = (COLOR_BITBOARD >> index) & 1;
 
         return (isBlack ? Color.Black : Color.White);
     }
 
-    /** */
+    /** Check if this square is contained in an array of squares. */
     isContained(squares: this[]): boolean {
         for (const square of squares) {
             if (square.index() === this.index()) {
