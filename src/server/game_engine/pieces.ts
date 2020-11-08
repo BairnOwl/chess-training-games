@@ -1,6 +1,6 @@
 import { Square } from "./square"
 
-
+// Piece movement related constants & interfaces
 interface DirectionVec {
     file: number;
     rank: number;
@@ -42,7 +42,7 @@ const PIECE_ABBREVIATIONS: string[] = ["B", "R", "Q", "K", "N"];
 /** Abstract base class for all piece types. */
 export abstract class Piece {
     /* TODO in theory these should be static but if I need to access them in a 
-    subclass I need to access them by class name instead of this. */
+    subclass I need to access them by class name instead of `this.` */
     directions: DirectionVec[];
     abbreviation: string;
 
