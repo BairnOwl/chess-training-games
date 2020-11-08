@@ -36,6 +36,17 @@ export class Board {
 
         return Array.from(singularSquaresSet);
     }
+
+    /** Get piece object that can reach the given square. */
+    getPieceThatReachesSquare(square: Square): Piece {
+        for (const piece of this.pieces) {
+            if (square.isContained(piece.getMoves())) {
+                return piece;
+            }
+        }
+        // TODO: should this throw error or return null ?
+        return null;
+    }
 }
 
 /** 

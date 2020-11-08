@@ -45,3 +45,20 @@ test("Board getSingularSquares", () => {
         expect(Square.fromNotation(expectedMove).isContained(moves)).toBeTruthy();
     }
 });
+
+test("Board getPieceThatReachesSquare", () => {
+    const board = new Board();
+
+    const squareBishop = Square.fromNotation("a1");
+    const bishop = new Bishop(squareBishop, board);
+
+    const squareKnight = Square.fromNotation("b1");
+    const knight = new Knight(squareKnight, board);
+
+    board.addPiece(bishop);
+    board.addPiece(knight);
+
+    expect(board.getPieceThatReachesSquare(Square.fromNotation("b2"))).toBe(bishop);
+    expect(board.getPieceThatReachesSquare(Square.fromNotation("a3"))).toBe(knight);
+    expect(board.getPieceThatReachesSquare(Square.fromNotation("d8"))).toBeNull();
+});
