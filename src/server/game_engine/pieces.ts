@@ -10,7 +10,7 @@ const ORTHOGONAL: DirectionVec[] = [
     { file: 0, rank: -1 }, // North
     { file: 0, rank: 1 }, // South
     { file: -1, rank: 0 }, // West
-    { file: 0, rank: -1 }, // East
+    { file: 1, rank: 0 }, // East
 ];
 
 const DIAGONAL: DirectionVec[] = [
