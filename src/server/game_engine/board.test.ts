@@ -61,4 +61,5 @@ test("Board getPieceThatReachesSquare", () => {
     expect(board.getPieceThatReachesSquare(Square.fromNotation("b2"))).toBe(bishop);
     expect(board.getPieceThatReachesSquare(Square.fromNotation("a3"))).toBe(knight);
     expect(board.getPieceThatReachesSquare(Square.fromNotation("d8"))).toBeNull();
+    expect(board.getPieceThatReachesSquare(Square.fromNotation("e2"))).toBeNull();
 });
