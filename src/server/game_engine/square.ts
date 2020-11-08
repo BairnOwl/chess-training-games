@@ -78,4 +78,14 @@ export class Square {
 
         return (isBlack ? Color.Black : Color.White);
     }
+
+    /** */
+    isContained(squares: this[]): boolean {
+        for (const square of squares) {
+            if (square.index() === this.index()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

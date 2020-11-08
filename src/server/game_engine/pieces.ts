@@ -39,9 +39,7 @@ const KNIGHT: DirectionVec[] = [
 const PIECE_ABBREVIATIONS: string[] = ["B", "R", "Q", "K", "N"];
 
 
-/**
- * Abstract base class for all piece types.
- */
+/** Abstract base class for all piece types. */
 export abstract class Piece {
     /* TODO in theory these should be static but if I need to access them in a 
     subclass I need to access them by class name instead of this. */
@@ -61,9 +59,7 @@ export abstract class Piece {
 }
 
 abstract class SlidingPiece extends Piece {
-    /**
-     * Get an array of squares to which the sliding piece instance can move to.
-     */
+    /** Get an array of squares to which the sliding piece instance can move to. */
     getMoves(): Square[] {
         const moves: Square[] = [];
 
@@ -85,7 +81,7 @@ abstract class SlidingPiece extends Piece {
                 }
 
                 // if square exists but its occupied -> move to next direction
-                if (this.board.occupied().includes(new_square)) {
+                if (this.board.isOccupied(new_square)) {
                     break;
                 }
 
@@ -98,9 +94,7 @@ abstract class SlidingPiece extends Piece {
 }
 
 abstract class NonSlidingPiece extends Piece {
-    /**
-     * Get an array of squares to which the non-sliding piece instance can move to.
-     */
+    /** Get an array of squares to which the non-sliding piece instance can move to. */
     getMoves(): Square[] {
         const moves: Square[] = [];
 
@@ -119,7 +113,7 @@ abstract class NonSlidingPiece extends Piece {
             }
 
             // if square exists but its occupied -> move to next direction
-            if (this.board.occupied().includes(new_square)) {
+            if (this.board.isOccupied(new_square)) {
                 continue;
             }
 

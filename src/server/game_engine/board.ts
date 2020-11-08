@@ -17,8 +17,9 @@ export class Board {
         this.pieces.push(piece);
     }
 
-    // todo should this be a getter ?
-    occupied(): Square[] {
-        return this.pieces.map(piece => piece.square);
+    /** Checks if a given square is already occupied by a piece or not. */
+    isOccupied(square: Square): boolean {
+        const occupiedSquares = this.pieces.map(piece => piece.square);
+        return square.isContained(occupiedSquares);
     }
 }

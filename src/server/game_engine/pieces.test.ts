@@ -13,9 +13,6 @@ test("Knight moves", () => {
 
     const moves = knight.getMoves();
     expect(moves.length).toBe(2);
-    console.log(moves);
-    // todo this does not check for equality by elements in the list
-    //  instead it checks for identity => investigate other usages of includes() and fix them
-    expect(moves.includes(Square.fromNotation("b3"))).toBeTruthy();
-    expect(moves.includes(Square.fromNotation("c2"))).toBeTruthy();
+    expect(Square.fromNotation("b3").isContained(moves)).toBeTruthy();
+    expect(Square.fromNotation("c2").isContained(moves)).toBeTruthy();
 });
