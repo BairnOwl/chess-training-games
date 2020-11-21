@@ -1,9 +1,13 @@
-import { Chess, ChessInstance, Piece, PieceType, Square } from "chess.js"
+import { ChessInstance, Piece, PieceType, Square } from "chess.js"
 import { SquareFunctions } from "./square"
 
+const Chess = require('chess.js');
 
-export class Board {
+
+export default class Board {
     chess: ChessInstance;
+
+    // chess: Chess;
 
     constructor() {
         this.chess = new Chess();
@@ -62,21 +66,22 @@ export class Board {
     }
 }
 
-/** 
- * Calculates symmetric difference between 2 sets of squares. 
- * Returns the squares which are not overlapping between the two input sets. 
+/**
+ * Calculates symmetric difference between 2 sets of squares.
+ * Returns the squares which are not overlapping between the two input sets.
  */
 const symmetricSquareDifference = (accumulator: Set<Square>, currentValue: Set<Square>, currentIndex: any, array: any) => {
     // this implementation is taken directly from
     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
     let _difference = new Set(accumulator);
 
-    for (let elem of currentValue) {
-        if (_difference.has(elem)) {
-            _difference.delete(elem);
-        } else {
-            _difference.add(elem);
-        }
-    }
+    currentValue.forEach(elem => {
+      if (_difference.has(elem)) {
+          _difference.delete(elem);
+      } else {
+          _difference.add(elem);
+      }
+    });
+
     return _difference;
 }

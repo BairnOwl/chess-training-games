@@ -15,7 +15,7 @@ test("SquareFunctions toIndex", () => {
     expect(index).toBe(27);
 });
 
-test("SquareFunctions toIndex", () => {
+test("SquareFunctions fromIndex", () => {
     let square = SquareFunctions.fromIndex(63);
     expect(square).toEqual("h8");
 
