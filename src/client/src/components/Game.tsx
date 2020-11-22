@@ -32,6 +32,10 @@ class Game extends React.Component<GameProps, GameState> {
     
   }
 
+  handleClick(event: React.MouseEvent) {
+    console.log(event);
+  }
+
   setInitialBoard() {
     let num1 = Math.floor(Math.random() * 64);
     let num2: number;
@@ -48,7 +52,7 @@ class Game extends React.Component<GameProps, GameState> {
       const { fen } = this.state;
 
       return (
-        <div style={boardsContainer} >
+        <div style={boardsContainer} onClick={this.handleClick}>
           <Chessboard position={fen} />
         </div>
       );
