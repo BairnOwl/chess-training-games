@@ -1,32 +1,35 @@
 import React from 'react';
 
 import Chessboard from 'chessboardjsx';
-import { Chess } from 'chess.js';
 import Board from '../game_engine/board';
 import { SquareFunctions } from "../game_engine/square"
 
-interface MyProps {
+
+interface GameProps {
 }
 
-interface MyState {
-  board: Board,
-  boardPosition: string
+interface GameState {
+  fen: string
 }
 
-class Game extends React.Component<MyProps, MyState> {
+class Game extends React.Component<GameProps, GameState> {
+  board: Board;
+
   constructor(props: any) {
     super(props);
 
-    let board = new Board();
+    // board is not a direct part of the component state,
+    // FEN is considered the sole driver of Game rendering.
+    this.board = new Board();
+    this.setInitialBoard();
 
     this.state = {
-      board: board,
-      boardPosition: board.chess.fen()
+      fen: this.board.chess.fen()
     }
   }
 
   componentDidMount() {
-    this.setInitialBoard();
+    
   }
 
   setInitialBoard() {
@@ -37,36 +40,30 @@ class Game extends React.Component<MyProps, MyState> {
       num2 = Math.floor(Math.random() * 64);
     } while (num1 === num2)
 
-    console.log(num1);
-    console.log(num2);
-
-
-    this.state.board.addPiece('n', SquareFunctions.fromIndex(num1));
-    this.state.board.addPiece('b', SquareFunctions.fromIndex(num2));
-
-    console.log(this.state.board.chess.ascii());
-    console.log(this.state.board.chess.fen());
-
-    this.setState({
-      boardPosition: this.state.board.chess.fen()
-    });
-
-    // this.state.boardPosition = this.state.board.chess.fen();
+    this.board.addPiece('n', SquareFunctions.fromIndex(num1));
+    this.board.addPiece('b', SquareFunctions.fromIndex(num2));
   }
 
   render() {
-      console.log("in render");
-      console.log(this.state.boardPosition);
-      console.log(this.state.board.chess.ascii());
-
-      const elem = <Chessboard position={this.state.boardPosition} />;
-      console.log(elem);
+      const { fen } = this.state;
 
       return (
-        <Chessboard position={this.state.boardPosition} />
+        <div style={boardsContainer} >
+          <Chessboard position={fen} />
+        </div>
       );
   }
 
 }
+
+const boardsContainer = {
+  display: "flex",
+  justifyContent: "space-around",
+  alignItems: "center",
+  flexWrap: "wrap",
+  width: "100vw",
+  marginTop: 30,
+  marginBottom: 50
+} as React.CSSProperties;
 
 export default Game;
