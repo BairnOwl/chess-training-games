@@ -3,6 +3,7 @@ import React from 'react';
 import Chessboard from 'chessboardjsx';
 import Board from '../game_engine/board';
 import { SquareFunctions } from "../game_engine/square"
+import Overlay from './Overlay';
 
 
 interface GameProps {
@@ -54,6 +55,13 @@ class Game extends React.Component<GameProps, GameState> {
       return (
         <div style={boardsContainer} onClick={this.handleClick}>
           <Chessboard position={fen} />
+          <Overlay 
+            title="Visualization Training" 
+            text="The aim of the game: Say which piece can 
+              reach a given square. You start with 2 pieces 
+              and get 1 more for every 10 right answers.
+              The catch - you cannot see where your pieces are!"
+            buttonText="Start" />
         </div>
       );
   }
@@ -62,6 +70,7 @@ class Game extends React.Component<GameProps, GameState> {
 
 const boardsContainer = {
   display: "flex",
+  position: "relative",
   justifyContent: "space-around",
   alignItems: "center",
   flexWrap: "wrap",
