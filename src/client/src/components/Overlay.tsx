@@ -5,15 +5,13 @@ interface OverlayProps {
   title: string
   text: string
   buttonText: string
+  gameHandler: any
 }
 
 interface OverlayState {
 }
 
 export default class Game extends React.Component<OverlayProps, OverlayState> {
-  handleClick(event: React.MouseEvent) {
-    console.log(event);
-  }
 
   render() {
     const { title, text, buttonText } = this.props;
@@ -22,7 +20,7 @@ export default class Game extends React.Component<OverlayProps, OverlayState> {
       <div style={boardsContainer}>
         <h2>{title}</h2>
         <p>{text}</p>
-        <button onClick={this.handleClick}>{buttonText}</button>
+        <button onClick={this.props.gameHandler}>{buttonText}</button>
       </div>
     );
   }

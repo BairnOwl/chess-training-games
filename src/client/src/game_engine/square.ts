@@ -1,6 +1,6 @@
 import { Square } from "chess.js"
 
-export class SquareFunctions {
+export default class SquareFunctions {
     static FILES: string[] = ["a", "b", "c", "d", "e", "f", "g", "h"];
     // create an array of numbers from 1-8 (inclusive)
     static RANKS: number[] = Array.from(new Array(8), (x, i) => i + 1);

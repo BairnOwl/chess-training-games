@@ -1,5 +1,5 @@
 import { ChessInstance, Piece, PieceType, Square } from "chess.js"
-import { SquareFunctions } from "./square"
+import SquareFunctions from "./square"
 
 const Chess = require('chess.js');
 
