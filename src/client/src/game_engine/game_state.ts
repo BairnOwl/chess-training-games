@@ -4,6 +4,7 @@ import SquareFunctions from "./square"
 
 export enum States {
     PRE_GAME,
+    COUNTDOWN,
     PLAY,
     GAME_OVER,
 }

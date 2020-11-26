@@ -33,34 +33,32 @@ class Game extends React.Component<GameProps, GameStates> {
   }
 
   startGame() {
-    this.setState({ state: States.PLAY });
+    this.setState({ state: States.COUNTDOWN });
   }
 
   render() {
       const { fen, state } = this.state;
 
-      // TODO this is a bad approach but it's only for testing purposes
+      // default overlay defaults to empty area
+      let overlay: JSX.Element = <area />;
+
       if (state === States.PRE_GAME) {
-        return (
-          <div style={boardsContainer} >
-            <Chessboard position={fen} />
-            <Overlay 
-              title="Visualization Training"
-              text="The aim of the game: Say which piece can 
-                reach a given square. You start with 2 pieces 
-                and get 1 more for every 10 right answers.
-                The catch - you cannot see where your pieces are!"
-              buttonText="Start"
-              gameHandler={this.startGame} />
-          </div>
-        );
-      } else {
-          return (
-            <div style={boardsContainer} >
-                <Chessboard position={fen} />
-            </div>
-          );
+        overlay = <Overlay
+            title="Visualization Training"
+            text="The aim of the game: Say which piece can 
+            reach a given square. You start with 2 pieces 
+            and get 1 more for every 10 right answers.
+            The catch - you cannot see where your pieces are!"
+            buttonText="Start"
+            gameHandler={this.startGame} />;
       }
+
+      return (
+        <div style={boardsContainer} >
+          <Chessboard position={fen} />
+          {overlay}
+        </div>
+      );
   }
 
 }
