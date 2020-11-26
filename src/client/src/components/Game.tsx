@@ -2,9 +2,12 @@ import React from 'react';
 
 import Chessboard from 'chessboardjsx';
 import GameState, { States } from '../game_engine/game_state';
-import Overlay from './Overlay';
-import Countdown from './CountdownOverlay';
+import BasicOverlay from './overlays/BasicOverlay';
+import Countdown from './overlays/Countdown';
+import GameOverlay from './overlays/GameOverlay';
 
+
+const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
 
 interface GameProps {
 }
@@ -31,10 +34,20 @@ class Game extends React.Component<GameProps, GameStates> {
     }
 
     this.startGame = this.startGame.bind(this)
+    this.startCountdown = this.startCountdown.bind(this)
+  }
+
+  startCountdown() {
+    this.setState({ state: States.COUNTDOWN });
   }
 
   startGame() {
-    this.setState({ state: States.COUNTDOWN });
+    // TODO: For some reason, after fen is set to EMPTY,
+    // pieces start disappearing one by one
+    this.setState({ 
+      state: States.PLAY, 
+      fen: EMPTY_FEN 
+    });
   }
 
   render() {
@@ -44,18 +57,25 @@ class Game extends React.Component<GameProps, GameStates> {
       let overlay: JSX.Element = <area />;
 
       if (state === States.PRE_GAME) {
-        overlay = <Overlay
+        overlay = <BasicOverlay
             title="Visualization Training"
             text="The aim of the game: Say which piece can 
             reach a given square. You start with 2 pieces 
             and get 1 more for every 10 right answers.
             The catch - you cannot see where your pieces are!"
             buttonText="Start"
-            gameHandler={this.startGame} />;
+            gameHandler={this.startCountdown} />;
       } else if (state === States.COUNTDOWN) {
-        overlay = <Countdown seconds={5} gameHandler={this.startGame} />
+        overlay = <Countdown seconds={3} gameHandler={this.startGame} />
+      } else if (state === States.PLAY) {
+        overlay = <GameOverlay 
+            square="d3" text="Which piece can reach this square?"
+            correctPiece="b" allPieces={["b", "n"]}
+            gameHandler={this.startGame}
+        />
       }
 
+      console.log(fen, state)
       return (
         <div style={boardsContainer} >
           <Chessboard position={fen} />

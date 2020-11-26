@@ -1,26 +1,34 @@
 import React from 'react';
 
 
+enum Answer {
+  CORRECT,
+  WRONG
+}
+
 interface OverlayProps {
-  title: string
+  square: string
   text: string
-  buttonText: string
+  correctPiece: string
+  allPieces: string[]
   gameHandler: any
 }
 
 interface OverlayState {
+  chosenPiece: string
 }
 
-export default class Overlay extends React.Component<OverlayProps, OverlayState> {
+export default class GameOverlay extends React.Component<OverlayProps, OverlayState> {
 
   render() {
-    const { title, text, buttonText } = this.props;
+    const { square, text, allPieces } = this.props;
 
+    // <button onClick={this.props.gameHandler}>{buttonText}</button>
     return (
       <div style={boardsContainer}>
-        <h2>{title}</h2>
+        <h1>{square}</h1>
         <p>{text}</p>
-        <button onClick={this.props.gameHandler}>{buttonText}</button>
+        
       </div>
     );
   }
