@@ -3,6 +3,7 @@ import React from 'react';
 import Chessboard from 'chessboardjsx';
 import GameState, { States } from '../game_engine/game_state';
 import Overlay from './Overlay';
+import Countdown from './CountdownOverlay';
 
 
 interface GameProps {
@@ -51,6 +52,8 @@ class Game extends React.Component<GameProps, GameStates> {
             The catch - you cannot see where your pieces are!"
             buttonText="Start"
             gameHandler={this.startGame} />;
+      } else if (state === States.COUNTDOWN) {
+        overlay = <Countdown seconds={5} gameHandler={this.startGame} />
       }
 
       return (

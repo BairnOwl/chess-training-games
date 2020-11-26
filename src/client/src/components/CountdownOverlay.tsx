@@ -2,25 +2,21 @@ import React from 'react';
 
 
 interface OverlayProps {
-  title: string
-  text: string
-  buttonText: string
+  seconds: number // how long the countdown should be
   gameHandler: any
 }
 
 interface OverlayState {
 }
 
-export default class Overlay extends React.Component<OverlayProps, OverlayState> {
+export default class Countdown extends React.Component<OverlayProps, OverlayState> {
 
   render() {
-    const { title, text, buttonText } = this.props;
+    const { seconds } = this.props;
 
     return (
       <div style={boardsContainer}>
-        <h2>{title}</h2>
-        <p>{text}</p>
-        <button onClick={this.props.gameHandler}>{buttonText}</button>
+        <h1>{seconds}</h1>
       </div>
     );
   }
@@ -28,7 +24,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 }
 
 const boardsContainer = {
-  background: "white",
+  background: "transparent",
   display: "flex",
   position: "absolute",
   top: 0,
@@ -38,6 +34,6 @@ const boardsContainer = {
   flexWrap: "wrap",
   zIndex: 10,
   width: "20vw",
-  marginTop: 30,
+  marginTop: "10rem",
   padding: 30,
 } as React.CSSProperties;
