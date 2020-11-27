@@ -1,5 +1,6 @@
 import Board from './board';
 import SquareFunctions from "./square"
+import { Square, PieceType } from "chess.js"
 
 
 export enum States {
@@ -26,11 +27,19 @@ export default class GameState {
     level: number;
     score: number;
 
+    square: Square | null;
+    pieceForSquare: PieceType | null;
+
     constructor() {
         this.board = new Board();
         this.currentState = States.PRE_GAME;
         this.level = 0;
         this.score = 0;
+
+        // question square & piece that can reach it is assigned after game 
+        // is already setup
+        this.square = null;
+        this.pieceForSquare = null;
     }
 
     /** Reset board and set 2 initial pieces */
@@ -49,5 +58,13 @@ export default class GameState {
 
         this.board.addPiece('n', SquareFunctions.fromIndex(num1));
         this.board.addPiece('b', SquareFunctions.fromIndex(num2));
+    }
+
+    /** Chooses a singular square and the piece that can reach it. */
+    startGame() {
+        const squares = this.board.getSingularSquares();
+        this.square = squares[Math.round(Math.random() * squares.length)];
+
+        this.pieceForSquare = this.board.getPieceThatReachesSquare(this.square);
     }
 }

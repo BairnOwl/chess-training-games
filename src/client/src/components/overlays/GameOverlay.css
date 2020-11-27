@@ -1,0 +1,11 @@
+.neutral {
+    background: #FFFFFF !important;
+}
+
+.correct {
+    background: #00FF00 !important;
+}
+
+.incorrect {
+    background: #FF0000 !important;
+}

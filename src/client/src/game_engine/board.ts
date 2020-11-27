@@ -6,17 +6,18 @@ const Chess = require('chess.js');
 
 export default class Board {
     chess: ChessInstance;
-
-    // chess: Chess;
+    pieces: PieceType[];
 
     constructor() {
         this.chess = new Chess();
         this.chess.clear(); // remove all pieces from the board
+        this.pieces = [];
     }
 
     /** Resets board (i.e. removes all pieces from the board). */
     reset(): void {
         this.chess.clear();
+        this.pieces = [];
     }
 
     /** Add a piece to the board */
@@ -25,6 +26,9 @@ export default class Board {
         // might generate some capture moves
         const pieceObj: Piece = {type: piece, color: this.chess.WHITE}
         this.chess.put(pieceObj, square);
+        
+        // keep track of all pieces on the board
+        this.pieces.push(piece);
     }
 
     /** Checks if a given square is already occupied by a piece or not. */

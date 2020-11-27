@@ -35,6 +35,7 @@ class Game extends React.Component<GameProps, GameStates> {
 
     this.startGame = this.startGame.bind(this)
     this.startCountdown = this.startCountdown.bind(this)
+    this.checkGuess = this.checkGuess.bind(this)
   }
 
   startCountdown() {
@@ -42,12 +43,18 @@ class Game extends React.Component<GameProps, GameStates> {
   }
 
   startGame() {
+    this.gameState.startGame();
+    
     // TODO: For some reason, after fen is set to EMPTY,
     // pieces start disappearing one by one
     this.setState({ 
       state: States.PLAY, 
       fen: EMPTY_FEN 
     });
+  }
+
+  checkGuess(piece: string) {
+    return (piece === this.gameState.pieceForSquare as string);
   }
 
   render() {
@@ -65,13 +72,17 @@ class Game extends React.Component<GameProps, GameStates> {
             The catch - you cannot see where your pieces are!"
             buttonText="Start"
             gameHandler={this.startCountdown} />;
-      } else if (state === States.COUNTDOWN) {
+      } 
+      else if (state === States.COUNTDOWN) {
         overlay = <Countdown seconds={3} gameHandler={this.startGame} />
-      } else if (state === States.PLAY) {
+      } 
+      else if (state === States.PLAY) {
         overlay = <GameOverlay 
-            square="d3" text="Which piece can reach this square?"
-            correctPiece="b" allPieces={["b", "n"]}
-            gameHandler={this.startGame}
+            square={this.gameState.square as string} 
+            text="Which piece can reach this square?"
+            correctPiece={this.gameState.pieceForSquare as string} 
+            allPieces={this.gameState.board.pieces.map(piece => piece as string)}
+            checkGuess={this.checkGuess}
         />
       }
 
