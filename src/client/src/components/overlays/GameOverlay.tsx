@@ -1,5 +1,6 @@
 import React from 'react';
 import './GameOverlay.css';
+import { Button } from '@material-ui/core';
 
 
 enum Answer {
@@ -40,10 +41,13 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     this.setState({ chosenPiece: piece, answer: answer });
 
     // after 0.5s destroy component and move to next question
+    console.log("before timeout")
     setTimeout(this.props.setNextPosition, 500);
+    console.log("after timeout")
   }
 
   componentWillUnmount() {
+    console.log("unmount overlay")
     this.props.loadNextOverlay()
   }
 
@@ -52,7 +56,9 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     const { chosenPiece, answer } = this.state;
 
     const pieceButtons = allPieces.map(piece => (
-      <button key={piece} onClick={() => this.clickHandler(piece)}>{piece}</button>
+      <Button 
+        variant="contained" color="primary"
+        key={piece} onClick={() => this.clickHandler(piece)}>{piece}</Button>
     ));
 
     let backgroundClass = "neutral";
@@ -64,7 +70,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
 
     return (
       <div className={backgroundClass} style={boardsContainer}>
-        <h1>{square}</h1>
+        <h1>{square.toUpperCase()}</h1>
         <p>{text}</p>
         {pieceButtons}
       </div>
