@@ -33,9 +33,10 @@ class Game extends React.Component<GameProps, GameStates> {
       state: this.gameState.currentState
     }
 
-    this.startGame = this.startGame.bind(this)
-    this.startCountdown = this.startCountdown.bind(this)
-    this.checkGuess = this.checkGuess.bind(this)
+    this.startGame = this.startGame.bind(this);
+    this.startCountdown = this.startCountdown.bind(this);
+    this.checkGuess = this.checkGuess.bind(this);
+    this.setNextPosition = this.setNextPosition.bind(this);
   }
 
   startCountdown() {
@@ -44,17 +45,23 @@ class Game extends React.Component<GameProps, GameStates> {
 
   startGame() {
     this.gameState.startGame();
-    
+
     // TODO: For some reason, after fen is set to EMPTY,
     // pieces start disappearing one by one
-    this.setState({ 
-      state: States.PLAY, 
-      fen: EMPTY_FEN 
+    this.setState({
+      state: States.PLAY,
+      fen: EMPTY_FEN
     });
   }
 
   checkGuess(piece: string) {
     return (piece === this.gameState.pieceForSquare as string);
+  }
+
+  setNextPosition() {
+    console.log(this.gameState);
+    this.gameState.setNextPosition();
+    this.gameState.chooseSquareAndPiece();
   }
 
   render() {
@@ -66,23 +73,24 @@ class Game extends React.Component<GameProps, GameStates> {
       if (state === States.PRE_GAME) {
         overlay = <BasicOverlay
             title="Visualization Training"
-            text="The aim of the game: Say which piece can 
-            reach a given square. You start with 2 pieces 
+            text="The aim of the game: Say which piece can
+            reach a given square. You start with 2 pieces
             and get 1 more for every 10 right answers.
             The catch - you cannot see where your pieces are!"
             buttonText="Start"
             gameHandler={this.startCountdown} />;
-      } 
+      }
       else if (state === States.COUNTDOWN) {
         overlay = <Countdown seconds={3} gameHandler={this.startGame} />
-      } 
+      }
       else if (state === States.PLAY) {
-        overlay = <GameOverlay 
-            square={this.gameState.square as string} 
+        overlay = <GameOverlay
+            square={this.gameState.square as string}
             text="Which piece can reach this square?"
-            correctPiece={this.gameState.pieceForSquare as string} 
+            correctPiece={this.gameState.pieceForSquare as string}
             allPieces={this.gameState.board.pieces.map(piece => piece as string)}
             checkGuess={this.checkGuess}
+            setNextPosition={this.setNextPosition}
         />
       }
 

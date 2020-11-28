@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Button } from '@material-ui/core';
 
 interface OverlayProps {
   title: string
@@ -20,7 +20,7 @@ export default class BasicOverlay extends React.Component<OverlayProps, OverlayS
       <div style={boardsContainer}>
         <h2>{title}</h2>
         <p>{text}</p>
-        <button onClick={this.props.gameHandler}>{buttonText}</button>
+        <Button variant="contained" color="primary" onClick={this.props.gameHandler} disableElevation>{buttonText}</Button>
       </div>
     );
   }

@@ -19,7 +19,7 @@ export default class GameState {
         2: "k",// Knight
         3: "r",// Rook
         4: "k",// King
-        5: "q", // Queen    
+        5: "q", // Queen
     }
 
     board: Board;
@@ -27,8 +27,8 @@ export default class GameState {
     level: number;
     score: number;
 
-    square: Square | null;
-    pieceForSquare: PieceType | null;
+    square: Square;
+    pieceForSquare: PieceType;
 
     constructor() {
         this.board = new Board();
@@ -36,10 +36,12 @@ export default class GameState {
         this.level = 0;
         this.score = 0;
 
-        // question square & piece that can reach it is assigned after game 
+        // question square & piece that can reach it is assigned after game
         // is already setup
-        this.square = null;
-        this.pieceForSquare = null;
+        this.square = "" as any;
+        this.pieceForSquare = "" as any;
+
+        this.chooseSquareAndPiece = this.chooseSquareAndPiece.bind(this);
     }
 
     /** Reset board and set 2 initial pieces */
@@ -60,11 +62,26 @@ export default class GameState {
         this.board.addPiece('b', SquareFunctions.fromIndex(num2));
     }
 
-    /** Chooses a singular square and the piece that can reach it. */
     startGame() {
+        this.chooseSquareAndPiece();
+    }
+
+    /** Chooses a singular square and the piece that can reach it. */
+    chooseSquareAndPiece() {
         const squares = this.board.getSingularSquares();
         this.square = squares[Math.round(Math.random() * squares.length)];
 
-        this.pieceForSquare = this.board.getPieceThatReachesSquare(this.square);
+        console.log(squares);
+
+        try {
+            this.pieceForSquare = this.board.getPieceThatReachesSquare(this.square);
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    /** Generates the next position of the board by moving the chosen piece. */
+    setNextPosition() {
+        this.board.movePiece(this.pieceForSquare, this.square);
     }
 }

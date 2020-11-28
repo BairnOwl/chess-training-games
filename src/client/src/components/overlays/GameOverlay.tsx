@@ -15,6 +15,7 @@ interface OverlayProps {
   correctPiece: string
   allPieces: string[]
   checkGuess: any
+  setNextPosition: any
 }
 
 interface OverlayState {
@@ -29,12 +30,14 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     this.state = {
       chosenPiece: '',
       answer: Answer.NONE
-    }  
+    }
   }
 
   clickHandler(piece: string) {
     const answer = piece === this.props.correctPiece ? Answer.RIGHT : Answer.WRONG;
     this.setState({ chosenPiece: piece, answer: answer });
+
+    this.props.setNextPosition();
   }
 
   render() {
