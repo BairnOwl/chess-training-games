@@ -14,8 +14,8 @@ interface OverlayProps {
   text: string
   correctPiece: string
   allPieces: string[]
-  checkGuess: any
   setNextPosition: any
+  loadNextOverlay: any
 }
 
 interface OverlayState {
@@ -24,6 +24,8 @@ interface OverlayState {
 }
 
 export default class GameOverlay extends React.Component<OverlayProps, OverlayState> {
+  interval: any;
+
   constructor(props: any) {
     super(props);
 
@@ -37,7 +39,12 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     const answer = piece === this.props.correctPiece ? Answer.RIGHT : Answer.WRONG;
     this.setState({ chosenPiece: piece, answer: answer });
 
-    this.props.setNextPosition();
+    // after 0.5s destroy component and move to next question
+    setTimeout(this.props.setNextPosition, 500);
+  }
+
+  componentWillUnmount() {
+    this.props.loadNextOverlay()
   }
 
   render() {

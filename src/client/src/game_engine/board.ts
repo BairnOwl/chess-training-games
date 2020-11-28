@@ -4,6 +4,12 @@ import SquareFunctions from "./square"
 const Chess = require('chess.js');
 
 
+export interface PieceOption {
+    square: Square;
+    piece: PieceType;
+}
+
+
 export default class Board {
     chess: ChessInstance;
     pieces: PieceType[];
@@ -32,13 +38,23 @@ export default class Board {
     }
 
     /** Moves a piece from one location to another. */
-    movePiece(piece: PieceType, square: Square): void {
-        try {
-            const fromSquare = this.getSquareForPiece(piece);
-            this.chess.move({ from: fromSquare, to: square });
-        } catch (e) {
-            console.log(e);
+    movePiece(pieceData: PieceOption, square: Square): void {
+        // We need to manually remove and readd the piece
+        // instead of using the inbuilt chess.js move() method
+        // because that will change the side to move and therefore
+        // will result in no more moves generated.
+
+        // Remove piece from chessboard
+        this.chess.remove(pieceData.square);
+        // Remove piece from local array of pieces
+        const pieceIndex = this.pieces.indexOf(pieceData.piece);
+        if (pieceIndex > -1 ) {
+            this.pieces.splice(pieceIndex, 1);
+        } else {
+            throw new Error(`Piece not in array of pieces: ${pieceData.piece}`);
         }
+
+        this.addPiece(pieceData.piece, square);
     }
 
     /** Checks if a given square is already occupied by a piece or not. */
@@ -57,14 +73,10 @@ export default class Board {
             const square = SquareFunctions.fromIndex(i);
 
             if (this.isOccupied(square)) {
-                console.log('occupied: ' + square);
                 const moves = this.chess.moves({ verbose: true, square: square });
-                console.log(this.chess.moves());
                 allMoves.push(new Set(moves.map(move => move.to)));
             }
         }
-
-        console.log(this.chess.ascii());
 
         // Calculate the symmetric difference between all square.
         // This results in a set of squares which cannot be reached by more than one piece.
@@ -73,11 +85,11 @@ export default class Board {
     }
 
     /** Get piece object that can reach the given square. */
-    getPieceThatReachesSquare(square: Square): PieceType {
+    getPieceThatReachesSquare(square: Square): PieceOption {
         const allMoves = this.chess.moves({ verbose: true });
         for (const move of allMoves) {
             if (move.to === square) {
-                return move.piece;
+                return { square: move.from, piece: move.piece };
             }
         }
         throw new Error('Error: cannot find piece that reaches square: ' + square);

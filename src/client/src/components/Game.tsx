@@ -15,6 +15,7 @@ interface GameProps {
 interface GameStates {
   fen: string
   state: States
+  questionNumber: number;
 }
 
 class Game extends React.Component<GameProps, GameStates> {
@@ -30,13 +31,14 @@ class Game extends React.Component<GameProps, GameStates> {
 
     this.state = {
       fen: this.gameState.board.chess.fen(),
-      state: this.gameState.currentState
+      state: this.gameState.currentState,
+      questionNumber: this.gameState.score
     }
 
     this.startGame = this.startGame.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
-    this.checkGuess = this.checkGuess.bind(this);
     this.setNextPosition = this.setNextPosition.bind(this);
+    this.loadNextOverlay = this.loadNextOverlay.bind(this);
   }
 
   startCountdown() {
@@ -54,14 +56,18 @@ class Game extends React.Component<GameProps, GameStates> {
     });
   }
 
-  checkGuess(piece: string) {
-    return (piece === this.gameState.pieceForSquare as string);
+  loadNextOverlay() {
+    this.setState({ state: States.PLAY });
   }
 
   setNextPosition() {
-    console.log(this.gameState);
+    // TODO move all this logic into gameState so that new piece adding
+    //      score keeping etc. can be handled
     this.gameState.setNextPosition();
     this.gameState.chooseSquareAndPiece();
+    this.gameState.score += 1;
+
+    this.setState({ questionNumber: this.gameState.score, state: States.BETWEEN });
   }
 
   render() {
@@ -87,11 +93,10 @@ class Game extends React.Component<GameProps, GameStates> {
         overlay = <GameOverlay
             square={this.gameState.square as string}
             text="Which piece can reach this square?"
-            correctPiece={this.gameState.pieceForSquare as string}
+            correctPiece={this.gameState.pieceForSquare.piece as string}
             allPieces={this.gameState.board.pieces.map(piece => piece as string)}
-            checkGuess={this.checkGuess}
             setNextPosition={this.setNextPosition}
-        />
+            loadNextOverlay={this.loadNextOverlay} />;
       }
 
       console.log(fen, state)

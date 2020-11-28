@@ -1,4 +1,4 @@
-import Board from './board';
+import Board, { PieceOption } from './board';
 import SquareFunctions from "./square"
 import { Square, PieceType } from "chess.js"
 
@@ -7,6 +7,7 @@ export enum States {
     PRE_GAME,
     COUNTDOWN,
     PLAY,
+    BETWEEN,
     GAME_OVER,
 }
 
@@ -28,7 +29,7 @@ export default class GameState {
     score: number;
 
     square: Square;
-    pieceForSquare: PieceType;
+    pieceForSquare: PieceOption;
 
     constructor() {
         this.board = new Board();
@@ -71,8 +72,6 @@ export default class GameState {
         const squares = this.board.getSingularSquares();
         this.square = squares[Math.round(Math.random() * squares.length)];
 
-        console.log(squares);
-
         try {
             this.pieceForSquare = this.board.getPieceThatReachesSquare(this.square);
         } catch(e) {
@@ -82,6 +81,6 @@ export default class GameState {
 
     /** Generates the next position of the board by moving the chosen piece. */
     setNextPosition() {
-        this.board.movePiece(this.pieceForSquare, this.square);
+        this.board.movePiece(this.pieceForSquare, this.square)
     }
 }
