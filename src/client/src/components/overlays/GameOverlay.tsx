@@ -55,6 +55,12 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     const { square, text, allPieces } = this.props;
     const { chosenPiece, answer } = this.state;
 
+    // todo temporary hotfix
+    let squareStr = "";
+    if (square) {
+        squareStr = square.toUpperCase();
+    }
+
     const pieceButtons = allPieces.map(piece => (
       <Button 
         variant="contained" color="primary"
@@ -70,7 +76,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
 
     return (
       <div className={backgroundClass} style={boardsContainer}>
-        <h1>{square.toUpperCase()}</h1>
+        <h1>{squareStr}</h1>
         <p>{text}</p>
         {pieceButtons}
       </div>
