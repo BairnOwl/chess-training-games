@@ -70,7 +70,9 @@ export default class GameState {
     /** Chooses a singular square and the piece that can reach it. */
     chooseSquareAndPiece() {
         const squares = this.board.getSingularSquares();
-        this.square = squares[Math.round(Math.random() * squares.length)];
+        const num = Math.floor(Math.random() * squares.length);
+
+        this.square = squares[num];
 
         try {
             this.pieceForSquare = this.board.getPieceThatReachesSquare(this.square);
@@ -81,6 +83,6 @@ export default class GameState {
 
     /** Generates the next position of the board by moving the chosen piece. */
     setNextPosition() {
-        this.board.movePiece(this.pieceForSquare, this.square)
+        this.board.movePiece(this.pieceForSquare, this.square);
     }
 }

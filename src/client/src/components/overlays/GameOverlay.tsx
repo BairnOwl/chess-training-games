@@ -72,8 +72,8 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     }
 
     const pieceButtons = allPieces.map(piece => (
-      <Button 
-        variant="contained" color="primary"
+      <Button
+        variant="outlined" color="primary"
         key={piece} onClick={() => this.clickHandler(piece)}>{PieceMap.get(piece)}</Button>
     ));
 

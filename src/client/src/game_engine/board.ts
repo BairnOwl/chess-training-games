@@ -98,10 +98,6 @@ export default class Board {
 
     /** Gets the square where a given piece is located. */
     getSquareForPiece(piece: PieceType): Square {
-        // if (!piece) {
-        //     return null;
-        // }
-
         // Iterate over all the squares on the board
         // For every square, check to see if it is occupied by the given piece.
         for (let i = 0; i < 64; i++) {
@@ -116,8 +112,6 @@ export default class Board {
         }
 
         throw new Error('Error: cannot find piece for a given piece: ' + piece);
-
-        // return null;
     }
 }
 
