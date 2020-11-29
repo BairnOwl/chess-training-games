@@ -1,6 +1,7 @@
 import React from 'react';
 import './GameOverlay.css';
 import { Button } from '@material-ui/core';
+import Pieces from "../pieces"
 
 
 enum Answer {
@@ -8,6 +9,15 @@ enum Answer {
   RIGHT,
   WRONG,
 }
+
+const PieceMap = new Map([
+    ['p', Pieces.wP],
+    ['n', Pieces.wN],
+    ['b', Pieces.wB],
+    ['r', Pieces.wR],
+    ['q', Pieces.wQ],
+    ['k', Pieces.wK],
+]);
 
 
 interface OverlayProps {
@@ -64,7 +74,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     const pieceButtons = allPieces.map(piece => (
       <Button 
         variant="contained" color="primary"
-        key={piece} onClick={() => this.clickHandler(piece)}>{piece}</Button>
+        key={piece} onClick={() => this.clickHandler(piece)}>{PieceMap.get(piece)}</Button>
     ));
 
     let backgroundClass = "neutral";
