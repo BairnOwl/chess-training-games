@@ -90,11 +90,19 @@ class Game extends React.Component<GameProps, GameStates> {
         overlay = <Countdown seconds={3} gameHandler={this.startGame} />
       }
       else if (state === States.PLAY) {
+        // convert pieces to strings
+        let pieces = this.gameState.board.pieces.map(piece => piece as string)
+        // sort them alphabetically
+        pieces = pieces.sort()
+        // Remove duplicate pieces (i.e. we can have 2 knights etc.)
+        let piecesSet = new Set(pieces);
+        pieces = Array.from(piecesSet); // convert back to array
+
         overlay = <GameOverlay
             square={this.gameState.square as string}
             text="Which piece can reach this square?"
             correctPiece={this.gameState.pieceForSquare.piece as string}
-            allPieces={this.gameState.board.pieces.map(piece => piece as string)}
+            allPieces={pieces}
             setNextPosition={this.setNextPosition}
             loadNextOverlay={this.loadNextOverlay} />;
       }
