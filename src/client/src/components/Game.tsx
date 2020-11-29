@@ -4,7 +4,7 @@ import Chessboard from 'chessboardjsx';
 import GameState, { States } from '../game_engine/game_state';
 import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
-import GameOverlay from './overlays/GameOverlay';
+import GameOverlay, { Answer } from './overlays/GameOverlay';
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -15,7 +15,8 @@ interface GameProps {
 interface GameStates {
   fen: string
   state: States
-  questionNumber: number;
+  questionNumber: number
+  isGameOver: boolean
 }
 
 class Game extends React.Component<GameProps, GameStates> {
@@ -32,13 +33,15 @@ class Game extends React.Component<GameProps, GameStates> {
     this.state = {
       fen: this.gameState.board.chess.fen(),
       state: this.gameState.currentState,
-      questionNumber: this.gameState.score
+      questionNumber: this.gameState.score,
+      isGameOver: false
     }
 
     this.startGame = this.startGame.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
     this.setNextPosition = this.setNextPosition.bind(this);
     this.loadNextOverlay = this.loadNextOverlay.bind(this);
+    this.playAgain = this.playAgain.bind(this);
   }
 
   startCountdown() {
@@ -56,22 +59,42 @@ class Game extends React.Component<GameProps, GameStates> {
     });
   }
 
-  loadNextOverlay() {
-    this.setState({ state: States.PLAY });
+  playAgain() {
+    this.gameState.setupPreGame();
+    this.setState({
+      fen: this.gameState.board.chess.fen(),
+      state: this.gameState.currentState,
+      questionNumber: this.gameState.score,
+      isGameOver: false
+    })
   }
 
-  setNextPosition() {
-    // TODO move all this logic into gameState so that new piece adding
-    //      score keeping etc. can be handled
-    this.gameState.setNextPosition();
-    this.gameState.chooseSquareAndPiece();
-    this.gameState.score += 1;
+  loadNextOverlay() {
+    if (this.state.isGameOver) {
+      this.setState({ state: States.GAME_OVER });
+    } else {
+      this.setState({ state: States.PLAY });
+    }
+  }
 
-    this.setState({ questionNumber: this.gameState.score, state: States.BETWEEN });
+  setNextPosition(answer: Answer) {
+    if ( answer === Answer.RIGHT ) {
+      // TODO move all this logic into gameState so that new piece adding
+      //      score keeping etc. can be handled
+      this.gameState.setNextPosition();
+      this.gameState.chooseSquareAndPiece();
+      this.gameState.score += 1;
+    } 
+
+    this.setState({ 
+      questionNumber: this.gameState.score, 
+      isGameOver: answer === Answer.WRONG, 
+      state: States.BETWEEN 
+    });
   }
 
   render() {
-      const { fen, state } = this.state;
+      const { fen, state, questionNumber } = this.state;
 
       // default overlay defaults to empty area
       let overlay: JSX.Element = <area />;
@@ -105,6 +128,13 @@ class Game extends React.Component<GameProps, GameStates> {
             allPieces={pieces}
             setNextPosition={this.setNextPosition}
             loadNextOverlay={this.loadNextOverlay} />;
+      }
+      else if (state === States.GAME_OVER) {
+        overlay = <BasicOverlay
+            title="GAME OVER"
+            text={`Your score: ${questionNumber}`}
+            buttonText="Play Again"
+            gameHandler={this.playAgain} />;
       }
 
       console.log(fen, state)

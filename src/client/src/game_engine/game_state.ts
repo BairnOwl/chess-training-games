@@ -1,6 +1,6 @@
 import Board, { PieceOption } from './board';
 import SquareFunctions from "./square"
-import { Square, PieceType } from "chess.js"
+import { Square } from "chess.js"
 
 
 export enum States {
@@ -49,6 +49,10 @@ export default class GameState {
     setupPreGame() {
         this.currentState = States.PRE_GAME;
         this.level = 0;
+        this.score = 0;
+        this.square = "" as any;
+        this.pieceForSquare = "" as any;
+
         this.board.reset();
 
         // Compute initial piece positions

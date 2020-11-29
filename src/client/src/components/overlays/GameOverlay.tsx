@@ -4,7 +4,7 @@ import { Button } from '@material-ui/core';
 import Pieces from "../pieces"
 
 
-enum Answer {
+export enum Answer {
   NONE,
   RIGHT,
   WRONG,
@@ -51,13 +51,10 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     this.setState({ chosenPiece: piece, answer: answer });
 
     // after 0.5s destroy component and move to next question
-    console.log("before timeout")
-    setTimeout(this.props.setNextPosition, 500);
-    console.log("after timeout")
+    setTimeout(() => this.props.setNextPosition(answer), 500);
   }
 
   componentWillUnmount() {
-    console.log("unmount overlay")
     this.props.loadNextOverlay()
   }
 
