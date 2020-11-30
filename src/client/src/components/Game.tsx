@@ -108,16 +108,22 @@ class Game extends React.Component<GameProps, GameStates> {
       else if (state === States.COUNTDOWN) {
         overlay = <Countdown seconds={3} gameHandler={this.startGame} />
       }
+      else if (state === States.LEVEL_UP) {
+        this.setState({
+          fen: this.gameState.board.chess.fen()
+        });
+
+        overlay = <Countdown seconds={3} gameHandler={this.startGame} />
+      }
       else if (state === States.PLAY) {
         // convert pieces to strings
-        let pieces = this.gameState.board.pieces.map(piece => piece as string)
+        let pieces = this.gameState.board.pieces.map(piece => piece as string);
         // sort them alphabetically
-        pieces = pieces.sort()
+        pieces = pieces.sort();
+        console.log(pieces);
         // Remove duplicate pieces (i.e. we can have 2 knights etc.)
         let piecesSet = new Set(pieces);
         pieces = Array.from(piecesSet); // convert back to array
-
-        console.log(pieces);
 
         overlay = <GameOverlay
             square={this.gameState.square as string}
@@ -136,7 +142,6 @@ class Game extends React.Component<GameProps, GameStates> {
             gameHandler={this.playAgain} />;
       }
 
-      console.log(fen, state)
       return (
         <div style={boardsContainer} >
           <Chessboard position={fen} />

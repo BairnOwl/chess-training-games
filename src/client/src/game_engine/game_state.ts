@@ -8,7 +8,8 @@ export enum States {
     COUNTDOWN,
     PLAY,
     BETWEEN,
-    GAME_OVER,
+    LEVEL_UP,
+    GAME_OVER
 }
 
 export default class GameState {
@@ -17,11 +18,11 @@ export default class GameState {
     // for every level add the corresponding piece to the board
     readonly LEVELS = [
         'b',// Bishop
-        'k',// Knight
+        'n',// Knight
         'r',// Rook
         'k',// King
         'q', // Queen
-    ]
+    ];
 
     board: Board;
     currentState: States;
@@ -95,6 +96,7 @@ export default class GameState {
         }
     }
 
+    /** Updates the score after a correct answer and levels up if necessary. */
     updateScore() {
         this.score += 1;
 

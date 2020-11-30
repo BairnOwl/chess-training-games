@@ -1,8 +1,8 @@
 import React from 'react';
 import './GameOverlay.css';
 import { Button } from '@material-ui/core';
-import Pieces from "../pieces"
-
+import Pieces from "../pieces";
+var Sound = require('react-sound').default;
 
 export enum Answer {
   NONE,
@@ -19,7 +19,6 @@ const PieceMap = new Map([
     ['k', Pieces.wK],
 ]);
 
-
 interface OverlayProps {
   square: string
   text: string
@@ -32,7 +31,9 @@ interface OverlayProps {
 
 interface OverlayState {
   chosenPiece: string
-  answer: Answer
+  answer: Answer,
+  playCorrectSound: typeof Sound.status,
+  playWrongSound: typeof Sound.status
 }
 
 export default class GameOverlay extends React.Component<OverlayProps, OverlayState> {
@@ -43,13 +44,18 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
 
     this.state = {
       chosenPiece: '',
-      answer: Answer.NONE
+      answer: Answer.NONE,
+      playCorrectSound: Sound.status.STOPPED,
+      playWrongSound: Sound.status.STOPPED
     }
   }
 
   clickHandler(piece: string) {
     const answer = piece === this.props.correctPiece ? Answer.RIGHT : Answer.WRONG;
-    this.setState({ chosenPiece: piece, answer: answer });
+    const playCorrectSound = piece === this.props.correctPiece ? Sound.status.PLAYING : Sound.status.STOPPED;
+    const playWrongSound = piece === this.props.correctPiece ? Sound.status.STOPPED : Sound.status.PLAYING;
+
+    this.setState({ chosenPiece: piece, answer: answer, playCorrectSound: playCorrectSound, playWrongSound: playWrongSound });
 
     // after 0.5s destroy component and move to next question
     setTimeout(() => this.props.evaluateAnswer(answer), 500);
@@ -61,7 +67,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
 
   render() {
     const { square, text, allPieces, score } = this.props;
-    const { chosenPiece, answer } = this.state;
+    const { chosenPiece, answer, playCorrectSound, playWrongSound } = this.state;
 
     // todo temporary hotfix
     let squareStr = "";
@@ -88,6 +94,8 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
         <p>{text}</p>
         {pieceButtons}
         <p>Score: {score}</p>
+        <Sound url="/audio/correct.wav" playStatus={playCorrectSound} />
+        <Sound url="/audio/wrong.wav" playStatus={playWrongSound} />
       </div>
     );
   }
