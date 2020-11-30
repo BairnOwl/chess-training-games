@@ -39,7 +39,7 @@ class Game extends React.Component<GameProps, GameStates> {
 
     this.startGame = this.startGame.bind(this);
     this.startCountdown = this.startCountdown.bind(this);
-    this.setNextPosition = this.setNextPosition.bind(this);
+    this.evaluateAnswer = this.evaluateAnswer.bind(this);
     this.loadNextOverlay = this.loadNextOverlay.bind(this);
     this.playAgain = this.playAgain.bind(this);
   }
@@ -77,13 +77,9 @@ class Game extends React.Component<GameProps, GameStates> {
     }
   }
 
-  setNextPosition(answer: Answer) {
+  evaluateAnswer(answer: Answer) {
     if ( answer === Answer.RIGHT ) {
-      // TODO move all this logic into gameState so that new piece adding
-      //      score keeping etc. can be handled
       this.gameState.setNextPosition();
-      this.gameState.chooseSquareAndPiece();
-      this.gameState.score += 1;
     }
 
     this.setState({
@@ -121,13 +117,15 @@ class Game extends React.Component<GameProps, GameStates> {
         let piecesSet = new Set(pieces);
         pieces = Array.from(piecesSet); // convert back to array
 
+        console.log(pieces);
+
         overlay = <GameOverlay
             square={this.gameState.square as string}
             text="Which piece can reach this square?"
             correctPiece={this.gameState.pieceForSquare.piece as string}
             allPieces={pieces}
             score={this.state.questionNumber}
-            setNextPosition={this.setNextPosition}
+            evaluateAnswer={this.evaluateAnswer}
             loadNextOverlay={this.loadNextOverlay} />;
       }
       else if (state === States.GAME_OVER) {

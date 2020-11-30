@@ -1,6 +1,6 @@
 import Board, { PieceOption } from './board';
 import SquareFunctions from "./square"
-import { Square } from "chess.js"
+import { PieceType, Square } from "chess.js"
 
 
 export enum States {
@@ -12,16 +12,16 @@ export enum States {
 }
 
 export default class GameState {
-    readonly QUESTIONS_PER_LEVEL = 5;
+    readonly QUESTIONS_PER_LEVEL = 2;
     readonly MAX_LEVEL = 5;
     // for every level add the corresponding piece to the board
-    readonly LEVELS = {
-        1: "b",// Bishop
-        2: "k",// Knight
-        3: "r",// Rook
-        4: "k",// King
-        5: "q", // Queen
-    }
+    readonly LEVELS = [
+        'b',// Bishop
+        'k',// Knight
+        'r',// Rook
+        'k',// King
+        'q', // Queen
+    ]
 
     board: Board;
     currentState: States;
@@ -43,6 +43,8 @@ export default class GameState {
         this.pieceForSquare = "" as any;
 
         this.chooseSquareAndPiece = this.chooseSquareAndPiece.bind(this);
+        this.updateScore = this.updateScore.bind(this);
+        this.generateSquareIndex = this.generateSquareIndex.bind(this);
     }
 
     /** Reset board and set 2 initial pieces */
@@ -56,18 +58,26 @@ export default class GameState {
         this.board.reset();
 
         // Compute initial piece positions
-        let num1 = Math.floor(Math.random() * 64);
+        let num1 = this.generateSquareIndex();
         let num2: number;
 
         do {
-            num2 = Math.floor(Math.random() * 64);
-        } while (num1 === num2)
+            num2 = this.generateSquareIndex();
+        } while (num1 === num2);
 
         this.board.addPiece('n', SquareFunctions.fromIndex(num1));
         this.board.addPiece('b', SquareFunctions.fromIndex(num2));
     }
 
     startGame() {
+        this.chooseSquareAndPiece();
+    }
+
+    /** Generates the next position of the board by moving the chosen piece. */
+    setNextPosition() {
+        this.board.movePiece(this.pieceForSquare, this.square);
+
+        this.updateScore();
         this.chooseSquareAndPiece();
     }
 
@@ -85,8 +95,26 @@ export default class GameState {
         }
     }
 
-    /** Generates the next position of the board by moving the chosen piece. */
-    setNextPosition() {
-        this.board.movePiece(this.pieceForSquare, this.square);
+    updateScore() {
+        this.score += 1;
+
+        if (this.score % this.QUESTIONS_PER_LEVEL === 0) {
+            console.log('level up');
+            this.level += 1;
+
+            let i: number;
+
+            do {
+              i = this.generateSquareIndex();
+            } while (this.board.isOccupied(SquareFunctions.fromIndex(i)));
+
+            let piece = this.LEVELS[this.level] as PieceType;
+
+            this.board.addPiece(piece, SquareFunctions.fromIndex(i));
+        }
+    }
+
+    generateSquareIndex(): number {
+        return Math.floor(Math.random() * 64);
     }
 }

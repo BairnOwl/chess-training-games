@@ -25,7 +25,7 @@ interface OverlayProps {
   text: string
   correctPiece: string
   allPieces: string[]
-  setNextPosition: any
+  evaluateAnswer: any
   loadNextOverlay: any,
   score: number
 }
@@ -52,7 +52,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     this.setState({ chosenPiece: piece, answer: answer });
 
     // after 0.5s destroy component and move to next question
-    setTimeout(() => this.props.setNextPosition(answer), 500);
+    setTimeout(() => this.props.evaluateAnswer(answer), 500);
   }
 
   componentWillUnmount() {
