@@ -26,7 +26,8 @@ interface OverlayProps {
   correctPiece: string
   allPieces: string[]
   setNextPosition: any
-  loadNextOverlay: any
+  loadNextOverlay: any,
+  score: number
 }
 
 interface OverlayState {
@@ -59,7 +60,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
   }
 
   render() {
-    const { square, text, allPieces } = this.props;
+    const { square, text, allPieces, score } = this.props;
     const { chosenPiece, answer } = this.state;
 
     // todo temporary hotfix
@@ -86,6 +87,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
         <h1>{squareStr}</h1>
         <p>{text}</p>
         {pieceButtons}
+        <p>Score: {score}</p>
       </div>
     );
   }

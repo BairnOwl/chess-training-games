@@ -84,12 +84,12 @@ class Game extends React.Component<GameProps, GameStates> {
       this.gameState.setNextPosition();
       this.gameState.chooseSquareAndPiece();
       this.gameState.score += 1;
-    } 
+    }
 
-    this.setState({ 
-      questionNumber: this.gameState.score, 
-      isGameOver: answer === Answer.WRONG, 
-      state: States.BETWEEN 
+    this.setState({
+      questionNumber: this.gameState.score,
+      isGameOver: answer === Answer.WRONG,
+      state: States.BETWEEN
     });
   }
 
@@ -126,6 +126,7 @@ class Game extends React.Component<GameProps, GameStates> {
             text="Which piece can reach this square?"
             correctPiece={this.gameState.pieceForSquare.piece as string}
             allPieces={pieces}
+            score={this.state.questionNumber}
             setNextPosition={this.setNextPosition}
             loadNextOverlay={this.loadNextOverlay} />;
       }

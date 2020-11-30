@@ -92,7 +92,7 @@ export default class Board {
                 return { square: move.from, piece: move.piece };
             }
         }
-        throw new Error('Error: cannot find piece that reaches square: ' + square);
+        throw new Error('Cannot find piece that reaches square: ' + square);
         // return null;
     }
 
@@ -111,7 +111,7 @@ export default class Board {
             }
         }
 
-        throw new Error('Error: cannot find piece for a given piece: ' + piece);
+        throw new Error('Cannot find square for a given piece: ' + piece);
     }
 }
 
