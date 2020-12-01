@@ -6,7 +6,6 @@ import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
 import GameOverlay, { Answer } from './overlays/GameOverlay';
 import LevelUpOverlay from './overlays/LevelUpOverlay';
-import PieceMap from "./pieces";
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -166,7 +165,7 @@ class Game extends React.Component<GameProps, GameStates> {
 
       return (
         <div style={boardsContainer} >
-          <Chessboard position={fen} />
+          <Chessboard position={fen} draggable={false} transitionDuration={0}/>
           {overlay}
         </div>
       );

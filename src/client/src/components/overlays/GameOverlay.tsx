@@ -22,7 +22,8 @@ interface OverlayProps {
 
 interface OverlayState {
   chosenPiece: string
-  answer: Answer,
+  answer: Answer
+  answerClicked: boolean
   playCorrectSound: typeof Sound.status,
   playWrongSound: typeof Sound.status
 }
@@ -36,17 +37,28 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     this.state = {
       chosenPiece: '',
       answer: Answer.NONE,
+      answerClicked: false,
       playCorrectSound: Sound.status.STOPPED,
-      playWrongSound: Sound.status.STOPPED
+      playWrongSound: Sound.status.STOPPED,
     }
   }
 
   clickHandler(piece: string) {
+    if (this.state.answerClicked) {
+      return;
+    }
+
     const answer = piece === this.props.correctPiece ? Answer.RIGHT : Answer.WRONG;
     const playCorrectSound = piece === this.props.correctPiece ? Sound.status.PLAYING : Sound.status.STOPPED;
     const playWrongSound = piece === this.props.correctPiece ? Sound.status.STOPPED : Sound.status.PLAYING;
 
-    this.setState({ chosenPiece: piece, answer: answer, playCorrectSound: playCorrectSound, playWrongSound: playWrongSound });
+    this.setState({ 
+      chosenPiece: piece, 
+      answer: answer, 
+      answerClicked: true, 
+      playCorrectSound: playCorrectSound, 
+      playWrongSound: playWrongSound 
+    });
 
     // after 0.5s destroy component and move to next question
     setTimeout(() => this.props.evaluateAnswer(answer), 500);
