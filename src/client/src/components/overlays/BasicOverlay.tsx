@@ -28,6 +28,7 @@ export default class BasicOverlay extends React.Component<OverlayProps, OverlayS
 }
 
 const boardsContainer = {
+  opacity: "0.90",
   background: "white",
   display: "flex",
   position: "absolute",

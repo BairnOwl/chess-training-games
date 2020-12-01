@@ -76,7 +76,8 @@ class Game extends React.Component<GameProps, GameStates> {
 
   loadNextOverlay() {
     if (this.state.isGameOver) {
-      this.setState({ state: States.GAME_OVER });
+      this.setState({ state: States.GAME_OVER, fen: this.gameState.board.chess.fen() });
+      console.log("Game Over", this.gameState.board.chess.fen())
     } else if (this.state.isLevelUp) {
       this.setState({ state: States.LEVEL_UP });
     } else {
