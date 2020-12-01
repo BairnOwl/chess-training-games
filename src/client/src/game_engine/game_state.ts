@@ -32,6 +32,8 @@ export default class GameState {
     square: Square;
     pieceForSquare: PieceOption;
 
+    levelUpPiece: PieceOption;
+
     constructor() {
         this.board = new Board();
         this.currentState = States.PRE_GAME;
@@ -42,6 +44,7 @@ export default class GameState {
         // is already setup
         this.square = "" as any;
         this.pieceForSquare = "" as any;
+        this.levelUpPiece = "" as any;
 
         this.chooseSquareAndPiece = this.chooseSquareAndPiece.bind(this);
         this.updateScore = this.updateScore.bind(this);
@@ -55,6 +58,7 @@ export default class GameState {
         this.score = 0;
         this.square = "" as any;
         this.pieceForSquare = "" as any;
+        this.levelUpPiece = "" as any;
 
         this.board.reset();
 
@@ -115,9 +119,13 @@ export default class GameState {
             } while (this.board.isOccupied(SquareFunctions.fromIndex(i)));
 
             let piece = this.LEVELS[this.level] as PieceType;
-            this.level += 1;
-
             this.board.addPiece(piece, SquareFunctions.fromIndex(i));
+            
+            this.level += 1;
+            this.levelUpPiece = {
+                piece: piece,
+                square: SquareFunctions.fromIndex(i)
+            }
             levelUp = true;
         }
         return levelUp;

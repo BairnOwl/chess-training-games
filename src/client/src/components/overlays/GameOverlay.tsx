@@ -1,7 +1,7 @@
 import React from 'react';
 import './GameOverlay.css';
 import { Button } from '@material-ui/core';
-import Pieces from "../pieces";
+import PieceMap from "../pieces";
 var Sound = require('react-sound').default;
 
 export enum Answer {
@@ -9,15 +9,6 @@ export enum Answer {
   RIGHT,
   WRONG,
 }
-
-const PieceMap = new Map([
-    ['p', Pieces.wP],
-    ['n', Pieces.wN],
-    ['b', Pieces.wB],
-    ['r', Pieces.wR],
-    ['q', Pieces.wQ],
-    ['k', Pieces.wK],
-]);
 
 interface OverlayProps {
   square: string

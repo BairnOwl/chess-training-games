@@ -4,7 +4,7 @@ import React from 'react';
 // NOTE: this is a direct copy paste from:
 //       https://github.com/willb335/chessboardjsx/blob/a536200e0d7e3379fcedaceb2bfe5be47921966d/src/Chessboard/svg/chesspieces/standard.js
 
-export default {
+const Pieces = {
   wP: (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -328,3 +328,14 @@ export default {
     </svg>
   ),
 };
+
+const PieceMap = new Map([
+    ['p', Pieces.wP],
+    ['n', Pieces.wN],
+    ['b', Pieces.wB],
+    ['r', Pieces.wR],
+    ['q', Pieces.wQ],
+    ['k', Pieces.wK],
+]);
+
+export default PieceMap;

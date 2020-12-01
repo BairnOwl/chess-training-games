@@ -6,6 +6,7 @@ import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
 import GameOverlay, { Answer } from './overlays/GameOverlay';
 import LevelUpOverlay from './overlays/LevelUpOverlay';
+import PieceMap from "./pieces";
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -151,8 +152,9 @@ class Game extends React.Component<GameProps, GameStates> {
       else if (state === States.LEVEL_UP) {
         overlay = <LevelUpOverlay
             title="LEVEL UP"
-            text={`Your got a ${this.gameState.LEVELS[0]}`}
             buttonText="Continue"
+            newPiece={this.gameState.levelUpPiece.piece}
+            newSquare={this.gameState.levelUpPiece.square}
             imageSource="flame.svg"
             // Need to somehow give credit to the authors if we want to use this image
             // It was taken from here https://www.flaticon.com/free-icon/flame_426833?term=fire&page=1&position=9

@@ -1,9 +1,12 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+import PieceMap from "../pieces";
+
 
 interface OverlayProps {
   title: string
-  text: string
+  newPiece: string
+  newSquare: string
   imageSource: string
   imageAlt: string
   imageHeight: string
@@ -21,13 +24,15 @@ export default class LevelUpOverlay extends React.Component<OverlayProps, Overla
   }
 
   render() {
-    const { title, text, buttonText, imageSource, imageAlt, imageHeight } = this.props;
+    const { title, newPiece, newSquare, buttonText, imageSource, imageAlt, imageHeight } = this.props;
 
     return (
       <div style={boardsContainer}>
         <h2>{title}</h2>
         <img src={imageSource} alt={imageAlt} height={imageHeight} />
-        <p>{text}</p>
+        <h3>New Piece:</h3>
+        {PieceMap.get(newPiece)}
+        <h4>{" on "}{newSquare.toUpperCase()}</h4>
         <Button variant="contained" color="primary" onClick={this.props.gameHandler} disableElevation>{buttonText}</Button>
       </div>
     );
