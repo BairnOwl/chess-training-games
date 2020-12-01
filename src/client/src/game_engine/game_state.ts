@@ -13,7 +13,7 @@ export enum States {
 }
 
 export default class GameState {
-    readonly QUESTIONS_PER_LEVEL = 2;
+    readonly QUESTIONS_PER_LEVEL = 1;
     readonly MAX_LEVEL = 5;
     // for every level add the corresponding piece to the board
     readonly LEVELS = [
@@ -74,12 +74,16 @@ export default class GameState {
         this.chooseSquareAndPiece();
     }
 
-    /** Generates the next position of the board by moving the chosen piece. */
-    setNextPosition() {
+    /** Generates the next position of the board by moving the chosen piece. 
+        Return true if level up is hit otherwise, false.
+    */
+    setNextPosition(): boolean {
         this.board.movePiece(this.pieceForSquare, this.square);
 
-        this.updateScore();
+        let levelUp = this.updateScore();
         this.chooseSquareAndPiece();
+
+        return levelUp;
     }
 
     /** Chooses a singular square and the piece that can reach it. */
@@ -97,12 +101,12 @@ export default class GameState {
     }
 
     /** Updates the score after a correct answer and levels up if necessary. */
-    updateScore() {
+    updateScore(): boolean {
+        let levelUp = false;
         this.score += 1;
 
         if (this.score % this.QUESTIONS_PER_LEVEL === 0) {
             console.log('level up');
-            this.level += 1;
 
             let i: number;
 
@@ -111,9 +115,12 @@ export default class GameState {
             } while (this.board.isOccupied(SquareFunctions.fromIndex(i)));
 
             let piece = this.LEVELS[this.level] as PieceType;
+            this.level += 1;
 
             this.board.addPiece(piece, SquareFunctions.fromIndex(i));
+            levelUp = true;
         }
+        return levelUp;
     }
 
     generateSquareIndex(): number {

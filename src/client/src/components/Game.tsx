@@ -5,6 +5,7 @@ import GameState, { States } from '../game_engine/game_state';
 import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
 import GameOverlay, { Answer } from './overlays/GameOverlay';
+import LevelUpOverlay from './overlays/LevelUpOverlay';
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -17,6 +18,7 @@ interface GameStates {
   state: States
   questionNumber: number
   isGameOver: boolean
+  isLevelUp: boolean
 }
 
 class Game extends React.Component<GameProps, GameStates> {
@@ -34,7 +36,8 @@ class Game extends React.Component<GameProps, GameStates> {
       fen: this.gameState.board.chess.fen(),
       state: this.gameState.currentState,
       questionNumber: this.gameState.score,
-      isGameOver: false
+      isGameOver: false,
+      isLevelUp: false
     }
 
     this.startGame = this.startGame.bind(this);
@@ -42,6 +45,7 @@ class Game extends React.Component<GameProps, GameStates> {
     this.evaluateAnswer = this.evaluateAnswer.bind(this);
     this.loadNextOverlay = this.loadNextOverlay.bind(this);
     this.playAgain = this.playAgain.bind(this);
+    this.continueGame = this.continueGame.bind(this);
   }
 
   startCountdown() {
@@ -65,27 +69,37 @@ class Game extends React.Component<GameProps, GameStates> {
       fen: this.gameState.board.chess.fen(),
       state: this.gameState.currentState,
       questionNumber: this.gameState.score,
-      isGameOver: false
+      isGameOver: false,
+      isLevelUp: false
     })
   }
 
   loadNextOverlay() {
     if (this.state.isGameOver) {
       this.setState({ state: States.GAME_OVER });
+    } else if (this.state.isLevelUp) {
+      this.setState({ state: States.LEVEL_UP });
     } else {
       this.setState({ state: States.PLAY });
     }
   }
 
+  continueGame() {
+    this.setState({ state: States.BETWEEN, isLevelUp: false });
+  }
+
   evaluateAnswer(answer: Answer) {
+    let levelUp = false;
     if ( answer === Answer.RIGHT ) {
-      this.gameState.setNextPosition();
+      levelUp = this.gameState.setNextPosition();
+      // add logic for the overlay
     }
 
     this.setState({
       questionNumber: this.gameState.score,
       isGameOver: answer === Answer.WRONG,
-      state: States.BETWEEN
+      isLevelUp: levelUp,
+      state: States.BETWEEN,
     });
   }
 
@@ -106,13 +120,6 @@ class Game extends React.Component<GameProps, GameStates> {
             gameHandler={this.startCountdown} />;
       }
       else if (state === States.COUNTDOWN) {
-        overlay = <Countdown seconds={3} gameHandler={this.startGame} />
-      }
-      else if (state === States.LEVEL_UP) {
-        this.setState({
-          fen: this.gameState.board.chess.fen()
-        });
-
         overlay = <Countdown seconds={3} gameHandler={this.startGame} />
       }
       else if (state === States.PLAY) {
@@ -140,6 +147,19 @@ class Game extends React.Component<GameProps, GameStates> {
             text={`Your score: ${questionNumber}`}
             buttonText="Play Again"
             gameHandler={this.playAgain} />;
+      } 
+      else if (state === States.LEVEL_UP) {
+        overlay = <LevelUpOverlay
+            title="LEVEL UP"
+            text={`Your got a ${this.gameState.LEVELS[0]}`}
+            buttonText="Continue"
+            imageSource="flame.svg"
+            // Need to somehow give credit to the authors if we want to use this image
+            // It was taken from here https://www.flaticon.com/free-icon/flame_426833?term=fire&page=1&position=9
+            imageAlt="Icons made by Vectors Market"
+            imageHeight="100"
+            gameHandler={this.continueGame} 
+            loadNextOverlay={this.loadNextOverlay} />;
       }
 
       return (
