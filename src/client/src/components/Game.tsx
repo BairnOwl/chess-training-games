@@ -1,6 +1,8 @@
 import React from 'react';
 
-import Chessboard from 'chessboardjsx';
+import Chessground from 'react-chessground'
+import 'react-chessground/dist/styles/chessground.css'
+
 import GameState, { States } from '../game_engine/game_state';
 import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
@@ -166,7 +168,7 @@ class Game extends React.Component<GameProps, GameStates> {
 
       return (
         <div style={boardsContainer} >
-          <Chessboard position={fen} draggable={false} transitionDuration={0}/>
+          <Chessground fen={fen} viewOnly={true} />
           {overlay}
         </div>
       );
