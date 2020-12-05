@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import PieceMap from "../pieces";
+import OverlayStyle from "./Style"
 
 
 interface OverlayProps {
@@ -27,30 +28,17 @@ export default class LevelUpOverlay extends React.Component<OverlayProps, Overla
     const { title, newPiece, newSquare, buttonText, imageSource, imageAlt, imageHeight } = this.props;
 
     return (
-      <div style={boardsContainer}>
+      <div style={OverlayStyle} className="level-up">
         <h2>{title}</h2>
         <img src={imageSource} alt={imageAlt} height={imageHeight} />
         <h3>New Piece:</h3>
-        {PieceMap.get(newPiece)}
-        <h4>{" on "}{newSquare.toUpperCase()}</h4>
+        <div className="new-piece">
+          {PieceMap.get(newPiece)}
+          <h4>{" on "}{newSquare.toUpperCase()}</h4>
+        </div>
         <Button variant="contained" color="primary" onClick={this.props.gameHandler} disableElevation>{buttonText}</Button>
       </div>
     );
   }
 
 }
-
-const boardsContainer = {
-  background: "white",
-  display: "flex",
-  position: "absolute",
-  top: 0,
-  left: "center",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  zIndex: 10,
-  width: "20vw",
-  marginTop: 30,
-  padding: 30,
-} as React.CSSProperties;

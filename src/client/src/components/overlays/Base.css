@@ -1,0 +1,98 @@
+.transparent-overlay {
+    opacity: 0.9;
+}
+
+.cg-wrap {
+    position: relative;
+    display: block;
+    height: 0;
+    padding-bottom: 100%; 
+    width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+    .cg-wrap {
+        padding-bottom: 85%; 
+        width: 85%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .cg-wrap {
+        padding-bottom: 75%; 
+        width: 75%;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    .cg-wrap {
+        padding-bottom: 60%; 
+        width: 60%;
+    }
+}
+
+@media screen and (min-width: 1200px) {
+    .cg-wrap {
+        padding-bottom: 40%; 
+        width: 40%;
+    }
+}
+
+.game-over h2 {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.game-over h3 {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.in-game p {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;   
+}
+
+.in-game p {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;   
+}
+
+.in-game .game-choices {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.in-game .game-choices button {   
+    margin: 10px;
+}
+
+.level-up h2 {
+    width: 100%;
+    margin-top: 0px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.level-up h3 {
+    width: 100%;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.level-up .new-piece {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}

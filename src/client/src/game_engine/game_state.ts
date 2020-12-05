@@ -27,7 +27,7 @@ export default class GameState {
         'k',// King
         'q', // Queen
     ];
-    readonly QUESTIONS_PER_LEVEL = 1;
+    readonly QUESTIONS_PER_LEVEL = 10;
     readonly MAX_LEVEL = this.LEVELS.length;
 
     board: Board;
@@ -115,10 +115,12 @@ export default class GameState {
         let levelUp = false;
         this.score += 1;
 
-        if (this.score === (this.MAX_LEVEL * this.QUESTIONS_PER_LEVEL)) {
+        // the +1 here is needed because the score starts from 0
+        if (this.score === ((this.MAX_LEVEL * this.QUESTIONS_PER_LEVEL) + 1)) {
             // game over - the player won
             return { levelUp: levelUp, win: true }
         }
+
 
         if (this.score % this.QUESTIONS_PER_LEVEL === 0) {
             console.log('level up');

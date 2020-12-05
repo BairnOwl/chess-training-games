@@ -9,6 +9,7 @@ import Countdown from './overlays/Countdown';
 import GameOverlay, { Answer } from './overlays/GameOverlay';
 import LevelUpOverlay from './overlays/LevelUpOverlay';
 import GameOverOverlay from './overlays/GameOverOverlay';
+import './overlays/Base.css';
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -64,7 +65,7 @@ export default class Game extends React.Component<GameProps, GameStates> {
     // pieces start disappearing one by one
     this.setState({
       state: States.PLAY,
-      fen: EMPTY_FEN
+      fen: EMPTY_FEN 
     });
   }
 
@@ -194,7 +195,7 @@ export default class Game extends React.Component<GameProps, GameStates> {
 
       return (
         <div style={boardsContainer} >
-          <Chessground fen={fen} viewOnly={true} />
+          <Chessground fen={fen} viewOnly={true} resizable={true} />
           {overlay}
         </div>
       );
