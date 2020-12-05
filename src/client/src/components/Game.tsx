@@ -158,7 +158,7 @@ export default class Game extends React.Component<GameProps, GameStates> {
             title="GAME OVER"
             buttonText="Play Again"
             score={questionNumber}
-            imageSource="game_over1.svg"
+            imageSource="game_over.svg"
             // Need to somehow give credit to the authors if we want to use this image
             // https://www.flaticon.com/free-icon/cancel_753345?term=error&page=1&position=1
             imageAlt="Icons made by Vectors Market (www.flaticon.com)"
