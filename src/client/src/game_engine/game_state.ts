@@ -9,12 +9,16 @@ export enum States {
     PLAY,
     BETWEEN,
     LEVEL_UP,
-    GAME_OVER
+    GAME_OVER,
+    WIN
+}
+
+interface GameStatus {
+    levelUp: boolean,
+    win: boolean,
 }
 
 export default class GameState {
-    readonly QUESTIONS_PER_LEVEL = 1;
-    readonly MAX_LEVEL = 5;
     // for every level add the corresponding piece to the board
     readonly LEVELS = [
         'b',// Bishop
@@ -23,6 +27,8 @@ export default class GameState {
         'k',// King
         'q', // Queen
     ];
+    readonly QUESTIONS_PER_LEVEL = 1;
+    readonly MAX_LEVEL = this.LEVELS.length;
 
     board: Board;
     currentState: States;
@@ -81,13 +87,13 @@ export default class GameState {
     /** Generates the next position of the board by moving the chosen piece. 
         Return true if level up is hit otherwise, false.
     */
-    setNextPosition(): boolean {
+    setNextPosition(): GameStatus {
         this.board.movePiece(this.pieceForSquare, this.square);
 
-        let levelUp = this.updateScore();
+        let gameStatus = this.updateScore();
         this.chooseSquareAndPiece();
 
-        return levelUp;
+        return gameStatus;
     }
 
     /** Chooses a singular square and the piece that can reach it. */
@@ -105,9 +111,14 @@ export default class GameState {
     }
 
     /** Updates the score after a correct answer and levels up if necessary. */
-    updateScore(): boolean {
+    updateScore(): GameStatus {
         let levelUp = false;
         this.score += 1;
+
+        if (this.score === (this.MAX_LEVEL * this.QUESTIONS_PER_LEVEL)) {
+            // game over - the player won
+            return { levelUp: levelUp, win: true }
+        }
 
         if (this.score % this.QUESTIONS_PER_LEVEL === 0) {
             console.log('level up');
@@ -128,7 +139,7 @@ export default class GameState {
             }
             levelUp = true;
         }
-        return levelUp;
+        return { levelUp: levelUp, win: false};
     }
 
     generateSquareIndex(): number {

@@ -8,6 +8,7 @@ import BasicOverlay from './overlays/BasicOverlay';
 import Countdown from './overlays/Countdown';
 import GameOverlay, { Answer } from './overlays/GameOverlay';
 import LevelUpOverlay from './overlays/LevelUpOverlay';
+import GameOverOverlay from './overlays/GameOverOverlay';
 
 
 const EMPTY_FEN: string = "8/8/8/8/8/8/8/8 w - - 0 1";
@@ -21,9 +22,10 @@ interface GameStates {
   questionNumber: number
   isGameOver: boolean
   isLevelUp: boolean
+  isGameWon: boolean
 }
 
-class Game extends React.Component<GameProps, GameStates> {
+export default class Game extends React.Component<GameProps, GameStates> {
   gameState: GameState;
 
   constructor(props: any) {
@@ -39,7 +41,8 @@ class Game extends React.Component<GameProps, GameStates> {
       state: this.gameState.currentState,
       questionNumber: this.gameState.score,
       isGameOver: false,
-      isLevelUp: false
+      isLevelUp: false,
+      isGameWon: false
     }
 
     this.startGame = this.startGame.bind(this);
@@ -72,14 +75,16 @@ class Game extends React.Component<GameProps, GameStates> {
       state: this.gameState.currentState,
       questionNumber: this.gameState.score,
       isGameOver: false,
-      isLevelUp: false
+      isLevelUp: false,
+      isGameWon: false,
     })
   }
 
   loadNextOverlay() {
     if (this.state.isGameOver) {
       this.setState({ state: States.GAME_OVER, fen: this.gameState.board.chess.fen() });
-      console.log("Game Over", this.gameState.board.chess.fen())
+    } else if (this.state.isGameWon) {
+      this.setState({ state: States.WIN, fen: this.gameState.board.chess.fen() });
     } else if (this.state.isLevelUp) {
       this.setState({ state: States.LEVEL_UP });
     } else {
@@ -93,8 +98,11 @@ class Game extends React.Component<GameProps, GameStates> {
 
   evaluateAnswer(answer: Answer) {
     let levelUp = false;
+    let gameWon = false;
     if ( answer === Answer.RIGHT ) {
-      levelUp = this.gameState.setNextPosition();
+      const gameResult = this.gameState.setNextPosition();
+      levelUp = gameResult.levelUp;
+      gameWon = gameResult.win;
       // add logic for the overlay
     }
 
@@ -102,6 +110,7 @@ class Game extends React.Component<GameProps, GameStates> {
       questionNumber: this.gameState.score,
       isGameOver: answer === Answer.WRONG,
       isLevelUp: levelUp,
+      isGameWon: gameWon,
       state: States.BETWEEN,
     });
   }
@@ -145,10 +154,15 @@ class Game extends React.Component<GameProps, GameStates> {
             loadNextOverlay={this.loadNextOverlay} />;
       }
       else if (state === States.GAME_OVER) {
-        overlay = <BasicOverlay
+        overlay = <GameOverOverlay
             title="GAME OVER"
-            text={`Your score: ${questionNumber}`}
             buttonText="Play Again"
+            score={questionNumber}
+            imageSource="game_over.svg"
+            // Need to somehow give credit to the authors if we want to use this image
+            // https://www.flaticon.com/free-icon/cancel_753345?term=error&page=1&position=1
+            imageAlt="Icons made by Vectors Market (www.flaticon.com)"
+            imageHeight="100"
             gameHandler={this.playAgain} />;
       } 
       else if (state === States.LEVEL_UP) {
@@ -160,10 +174,22 @@ class Game extends React.Component<GameProps, GameStates> {
             imageSource="flame.svg"
             // Need to somehow give credit to the authors if we want to use this image
             // It was taken from here https://www.flaticon.com/free-icon/flame_426833?term=fire&page=1&position=9
-            imageAlt="Icons made by Vectors Market"
+            imageAlt="Icons made by Vectors Market (www.flaticon.com)"
             imageHeight="100"
             gameHandler={this.continueGame} 
             loadNextOverlay={this.loadNextOverlay} />;
+      }
+      else if (state === States.WIN) {
+        overlay = <GameOverOverlay
+            title="YOU WIN"
+            buttonText="Play Again"
+            score={questionNumber}
+            imageSource="winner.svg"
+            // Need to somehow give credit to the authors if we want to use this image
+            // It was taken from here https://www.flaticon.com/free-icon/winner_1021220?term=trophy&page=1&position=22
+            imageAlt="Icons made by Freepik (www.flaticon.com)"
+            imageHeight="100"
+            gameHandler={this.playAgain} />;
       }
 
       return (
@@ -186,5 +212,3 @@ const boardsContainer = {
   marginTop: 30,
   marginBottom: 50
 } as React.CSSProperties;
-
-export default Game;
