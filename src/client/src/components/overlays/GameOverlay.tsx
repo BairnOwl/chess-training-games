@@ -2,6 +2,7 @@ import React from 'react';
 import './GameOverlay.css';
 import { Button } from '@material-ui/core';
 import PieceMap from "../pieces";
+import OverlayStyle from "./Style"
 var Sound = require('react-sound').default;
 
 export enum Answer {
@@ -84,6 +85,7 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
         key={piece} onClick={() => this.clickHandler(piece)}>{PieceMap.get(piece)}</Button>
     ));
 
+
     let backgroundClass = "neutral";
     if (answer === Answer.RIGHT) {
       backgroundClass = "correct";
@@ -92,10 +94,12 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
     }
 
     return (
-      <div className={backgroundClass} style={boardsContainer}>
+      <div className={`${backgroundClass} in-game`} style={OverlayStyle}>
         <h1>{squareStr}</h1>
         <p>{text}</p>
-        {pieceButtons}
+        <div className="game-choices">
+          {pieceButtons}
+        </div>
         <p>Score: {score}</p>
         <Sound url="/audio/correct.wav" playStatus={playCorrectSound} />
         <Sound url="/audio/wrong.wav" playStatus={playWrongSound} />
@@ -104,18 +108,3 @@ export default class GameOverlay extends React.Component<OverlayProps, OverlaySt
   }
 
 }
-
-const boardsContainer = {
-  // background: "white",
-  display: "flex",
-  position: "absolute",
-  top: 0,
-  left: "center",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  zIndex: 10,
-  width: "20vw",
-  marginTop: 30,
-  padding: 30,
-} as React.CSSProperties;

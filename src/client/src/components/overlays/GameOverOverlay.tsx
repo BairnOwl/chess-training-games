@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
+import OverlayStyle from "./Style"
 
 
 interface OverlayProps {
@@ -21,7 +22,7 @@ export default class GameOverOverlay extends React.Component<OverlayProps, Overl
     const { title, score, buttonText, imageSource, imageAlt, imageHeight } = this.props;
 
     return (
-      <div style={boardsContainer}>
+      <div style={OverlayStyle} className="game-over transparent-overlay">
         <h2>{title}</h2>
         <img src={imageSource} alt={imageAlt} height={imageHeight} />
         <h3>Score: {score}</h3>
@@ -31,19 +32,3 @@ export default class GameOverOverlay extends React.Component<OverlayProps, Overl
   }
 
 }
-
-const boardsContainer = {
-  opacity: "0.90",
-  background: "white",
-  display: "flex",
-  position: "absolute",
-  top: 0,
-  left: "center",
-  justifyContent: "space-around",
-  alignItems: "center",
-  flexWrap: "wrap",
-  zIndex: 10,
-  width: "20vw",
-  marginTop: 30,
-  padding: 30,
-} as React.CSSProperties;
