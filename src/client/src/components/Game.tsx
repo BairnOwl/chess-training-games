@@ -195,7 +195,7 @@ export default class Game extends React.Component<GameProps, GameStates> {
 
       return (
         <div style={boardsContainer} >
-          <Chessground fen={fen} viewOnly={true} />
+          <Chessground fen={fen} viewOnly={true} resizable={true} />
           {overlay}
         </div>
       );

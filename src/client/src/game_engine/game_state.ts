@@ -21,13 +21,13 @@ interface GameStatus {
 export default class GameState {
     // for every level add the corresponding piece to the board
     readonly LEVELS = [
-        // 'b',// Bishop
-        // 'n',// Knight
+        'b',// Bishop
+        'n',// Knight
         'r',// Rook
         'k',// King
         'q', // Queen
     ];
-    readonly QUESTIONS_PER_LEVEL = 1;
+    readonly QUESTIONS_PER_LEVEL = 10;
     readonly MAX_LEVEL = this.LEVELS.length;
 
     board: Board;
@@ -113,13 +113,14 @@ export default class GameState {
     /** Updates the score after a correct answer and levels up if necessary. */
     updateScore(): GameStatus {
         let levelUp = false;
+        this.score += 1;
 
-        if (this.score === (this.MAX_LEVEL * this.QUESTIONS_PER_LEVEL)) {
+        // the +1 here is needed because the score starts from 0
+        if (this.score === ((this.MAX_LEVEL * this.QUESTIONS_PER_LEVEL) + 1)) {
             // game over - the player won
             return { levelUp: levelUp, win: true }
         }
 
-        this.score += 1;
 
         if (this.score % this.QUESTIONS_PER_LEVEL === 0) {
             console.log('level up');
